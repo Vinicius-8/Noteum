@@ -11,13 +11,13 @@ export default StyleSheet.create({
     header:{
         height: 55,
         flexDirection: 'row',
-        borderBottomWidth: .3,
+        //borderBottomWidth: .3,
         borderBottomColor: '#43485C',
-        
+        shadowColor: 'black',
+        elevation: 2
     },
     hambBox:{
         justifyContent: 'center',
-        //backgroundColor: 'red',
         marginLeft: 15,
     },
     titleBox:{
@@ -30,5 +30,19 @@ export default StyleSheet.create({
         color:'snow',
         fontSize: 20,
         fontWeight: 'bold'
+    },
+    body:{
+        flex: 1,
+        alignItems:'center'
+    },
+    item:{
+        width: 300,
+        height: 150,
+        borderRadius: 8,
+        backgroundColor: '#43485C',
+        margin: 20,
+    },
+    shimmer:{
+        margin: 10,
     }
 });
