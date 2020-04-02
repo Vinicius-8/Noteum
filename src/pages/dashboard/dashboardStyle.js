@@ -35,14 +35,5 @@ export default StyleSheet.create({
         flex: 1,
         alignItems:'center'
     },
-    item:{
-        width: 300,
-        height: 150,
-        borderRadius: 8,
-        backgroundColor: '#43485C',
-        margin: 20,
-    },
-    shimmer:{
-        margin: 10,
-    }
+
 });

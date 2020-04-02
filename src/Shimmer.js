@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   shimmer: {
     overflow: 'hidden',
     backgroundColor: '#B2B5BE',
-    borderRadius: 3,
+    
   },
 });
 
@@ -35,12 +35,12 @@ const linear = ANIMATION.interpolate({
 
 runAnimation();
 
-const Shimmer = ({ width, height }) => {
+const Shimmer = ({ width, height, borderRadius,borderBottomRightRadius,borderBottomLeftRadius }) => {
   const [positionX, setPositionX] = useState(null);
   let viewRef = null;
   return (
     <View
-      style={[styles.shimmer, { width, height }]}
+      style={[styles.shimmer, { width, height, borderRadius,borderBottomRightRadius,borderBottomLeftRadius}]}
       ref={ref => (viewRef = ref)}
       onLayout={() => {
         if (viewRef) {

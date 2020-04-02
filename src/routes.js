@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
 
 import { NavigationContainer} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -10,10 +9,10 @@ import Login from './pages/login'
 import Dashboard from './pages/dashboard'
 
 const Routes = () => {
-    return(
+    return(        
         <NavigationContainer >
             <AppStack.Navigator 
-                initialRouteName="Login"
+                initialRouteName="Dashboard"
                 screenOptions={{ gestureEnabled: false }}>
                 <AppStack.Screen name="Login" component={Login}  options={{ headerShown: false }}/>
                 <AppStack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
