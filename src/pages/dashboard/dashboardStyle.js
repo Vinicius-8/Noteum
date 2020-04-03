@@ -14,7 +14,8 @@ export default StyleSheet.create({
         //borderBottomWidth: .3,
         borderBottomColor: '#43485C',
         shadowColor: 'black',
-        elevation: 2
+        elevation: 2,
+        marginBottom: 5
     },
     hambBox:{
         justifyContent: 'center',
