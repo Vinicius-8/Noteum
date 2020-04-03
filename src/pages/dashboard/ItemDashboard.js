@@ -5,7 +5,7 @@ import { Entypo } from '@expo/vector-icons'
 import Shimmer from '../../Shimmer'
 
 const ItemDashboard = (props) => {
-
+    
     if(props.isLoading){
         if(props.size === 'small'){
             return(//item small loading
@@ -50,7 +50,7 @@ const ItemDashboard = (props) => {
     }else{ // no
         if(props.size === 'small'){
             return(//item small not loading
-                <TouchableOpacity style={styleSmall.item} >
+                <View style={styleSmall.item}>
                 
                     <Image source={props.item.image} style={styleSmall.image} />
                 
@@ -59,11 +59,11 @@ const ItemDashboard = (props) => {
                         <Text ellipsizeMode='tail' numberOfLines={6} style={styleSmall.text}>{props.item.text}</Text>
                     </View>
                     
-                </TouchableOpacity>
+                </View>
             );
         }else if(props.size === 'large'){
                 return(//item small not loading
-                    <TouchableOpacity style={styleLarge.item}>
+                    <View style={styleLarge.item} >
                         
                         <Image source={props.item.image} style={styleLarge.image} />
                     
@@ -77,7 +77,7 @@ const ItemDashboard = (props) => {
                             
                         </View>
                     
-                    </TouchableOpacity>
+                    </View>
                 );
         }
     }
