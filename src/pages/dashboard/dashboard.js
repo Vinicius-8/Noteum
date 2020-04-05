@@ -7,8 +7,6 @@ import data from '../../dataTests/data'
 import ItemDash from './ItemDashboard'
 
 
-
-
 const Dashboard = (props) => {
     const [exibitionMode, setExibitionMode] = useState(props.mode);    
     const [loading, setLoading] = useState(false);
@@ -16,7 +14,7 @@ const Dashboard = (props) => {
     
 
     function touched(item){
-        console.log('tocou no item: ', item.title);
+        console.log('tocou no item: ', item.title, props);
     }
 
     if(loading){ // loading screen
