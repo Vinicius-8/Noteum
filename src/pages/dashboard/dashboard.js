@@ -6,9 +6,13 @@ import style from './dashboardStyle'
 import data from '../../dataTests/data'
 import ItemDash from './ItemDashboard'
 
+
+
+
 const Dashboard = (props) => {
-    const [exibitionMode, setExibitionMode] = useState(props.route.params.mode);    
+    const [exibitionMode, setExibitionMode] = useState(props.mode);    
     const [loading, setLoading] = useState(false);
+    
     
 
     function touched(item){
@@ -37,7 +41,7 @@ const Dashboard = (props) => {
             <View style={style.container}>
                 <View style={style.header}>
                     <TouchableOpacity style={style.hambBox}
-                        onPress={()=> props.navigation.openDrawer()}
+                        onPress={()=> props.context.openDrawer()}
                     >
                         <SimpleLineIcons name="menu" size={28} color="white"/>
                     </TouchableOpacity>

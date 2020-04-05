@@ -1,40 +1,41 @@
-import React from 'react';
-import {FlatList} from 'react-native'
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, {useRef} from 'react';
+import { DrawerLayoutAndroid, View, Text, StyleSheet} from 'react-native'
+import Constants from 'expo-constants'  
 
 import DashBoard from './dashboard'
 
 const Index = () => {
-    const DrawerNav = createDrawerNavigator();
-    const data =[
-        {name:'lista1', param:'small'},
-        {name:'lista2', param:'large'}
-    ]
-    const arr = ["lista1", "lista2"]
+    const drawerRef = useRef(null)
 
-    console.log(arr[0]);
-    
-    return(
-        <DrawerNav.Navigator edgeWidth={300} 
-            drawerContentOptions={{
-                activeTintColor:'snow',  
-                inactiveTintColor:'gray',
-                labelStyle: {
-                    fontSize: 15
-                }
-            }}
-            drawerStyle={{
-                backgroundColor: '#43485C',
-            }}
-        >
-            <DrawerNav.Screen name="lista1" component={DashBoard} 
-            initialParams={{mode:"small"}}/>
-            <DrawerNav.Screen name="lista2" component={DashBoard} 
-            initialParams={{mode:"large"}}/>
-        </DrawerNav.Navigator>
+    const navigationView = (
+      <View style={style.drawerContainer}>
+        <Text style={style.drawerItem}>I'm in the Drawer!</Text>
+      </View>
+    );
+  
+    return (
+      <DrawerLayoutAndroid
+        drawerWidth={200} 
+        drawerPosition="left"
+        ref={drawerRef}
+        renderNavigationView={() => navigationView}
+       
+      >
+        <DashBoard mode="small" context={drawerRef.current}/>
+      </DrawerLayoutAndroid>
     );
 
 }
 
+const style = StyleSheet.create({
+    drawerContainer: {
+        flex:1,
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor:'#43485C'
+    },
+    drawerItem:{
+        backgroundColor:'red'
+    }
+});
 
 export default Index;
