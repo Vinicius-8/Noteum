@@ -55,8 +55,8 @@ const ItemDashboard = (props) => {
                     <Image source={props.item.image} style={styleSmall.image} />
                 
                     <View style={styleSmall.textBox}>
-                        <Text style={styleSmall.title}>{props.item.title}</Text>
-                        <Text ellipsizeMode='tail' numberOfLines={6} style={styleSmall.text}>{props.item.text}</Text>
+                        <Text numberOfLines={2} style={styleSmall.title}>{props.item.title}</Text>
+                        <Text ellipsizeMode='tail' numberOfLines={4} style={styleSmall.text}>{props.item.text}</Text>
                     </View>
                     
                 </View>
@@ -69,7 +69,7 @@ const ItemDashboard = (props) => {
                     
                         <View style={styleLarge.textBox}>
                             <View style={styleLarge.titleBox}>
-                                <Text style={styleSmall.title}>{props.item.title}</Text>
+                                <Text numberOfLines={1} style={styleSmall.title}>{props.item.title}</Text>
                             </View>
                             <View style={styleLarge.subTitleBox}>
                                 <Text ellipsizeMode='tail' numberOfLines={2} style={styleLarge.text}>{props.item.text}</Text>  
@@ -130,7 +130,7 @@ const styleLarge = StyleSheet.create({
         margin: 1
     },
     text:{
-        color:'white'
+        color:'#e5e5e5'
     }
 });
 
@@ -157,18 +157,20 @@ const styleSmall = StyleSheet.create({
         height: 130,
         marginLeft:2,
         paddingLeft: 8,
-        justifyContent: 'flex-start',
+        justifyContent: 'space-evenly',
         //backgroundColor:'red',
-        overflow:'hidden'
+        overflow:'hidden',
     },
     title:{
         color:'snow',
         fontWeight:'bold',
-        fontSize:20
+        fontSize:20,
+        
     },
     text:{
         marginTop:5,
         color:'white',
+        
         //backgroundColor:'gray',
     }
 });

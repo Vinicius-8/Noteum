@@ -7,14 +7,13 @@ import data from '../../dataTests/data'
 import ItemDash from './ItemDashboard'
 
 
-const Dashboard = (props) => {
-    const [exibitionMode, setExibitionMode] = useState(props.mode);    
+const Dashboard = (props) => {  
     const [loading, setLoading] = useState(false);
-    
+    //console.log('-refDash-> ',props.context);
     
 
     function touched(item){
-        console.log('tocou no item: ', item.title, props);
+        console.log('tocou no item: ', item.title);
     }
 
     if(loading){ // loading screen
@@ -37,26 +36,18 @@ const Dashboard = (props) => {
     }else{
         return(
             <View style={style.container}>
-                <View style={style.header}>
-                    <TouchableOpacity style={style.hambBox}
-                        onPress={()=> props.context.openDrawer()}
-                    >
-                        <SimpleLineIcons name="menu" size={28} color="white"/>
-                    </TouchableOpacity>
-                    <View style={style.titleBox}>
-                        <Text style={style.title}>Noticias</Text>
-                    </View>
-                </View>
+        
                 <View style={style.body}>
                     <FlatList 
                         data={data}                    
                         keyExtractor={data => String(data.id)}
+                        style={{ paddingTop: 5}}
                         renderItem={(
                             ({item}) => 
                             <TouchableOpacity onPress={()=>{
                                 touched(item)
                             }}>
-                                <ItemDash size={exibitionMode} isLoading={loading} item={item} onPress={touched}/>
+                                <ItemDash size={props.mode} isLoading={loading} item={item} onPress={touched}/>
                             </TouchableOpacity>
                         )}
                     />

@@ -1,21 +1,19 @@
 import { StyleSheet } from 'react-native';
-import Constants from 'expo-constants'
 
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#262C38',
-        paddingTop: Constants.statusBarHeight, 
+        backgroundColor: '#262C38',        
+        
+        //paddingTop: 5
+        
     },
     header:{
         height: 55,
         flexDirection: 'row',
-        //borderBottomWidth: .3,
-        borderBottomColor: '#43485C',
         shadowColor: 'black',
-        elevation: 2,
-        marginBottom: 5
+        backgroundColor: '#262C38',
     },
     hambBox:{
         justifyContent: 'center',
