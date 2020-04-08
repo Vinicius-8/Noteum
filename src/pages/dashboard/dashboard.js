@@ -9,7 +9,6 @@ import ItemDash from './ItemDashboard'
 
 const Dashboard = (props) => {  
     const [loading, setLoading] = useState(false);
-    //console.log('-refDash-> ',props.context);
     
 
     function touched(item){
