@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, Text,  } from 'react-native';
 import { Entypo } from '@expo/vector-icons'
 
 import Shimmer from '../../Shimmer'
+import BottomSheet  from './bottomSheet'
+
 
 const ItemDashboard = (props) => {
-    
+    const bottomSheetRef = useRef();
+
     if(props.isLoading){
         if(props.size === 'small'){
             return(//item small loading
@@ -65,7 +68,11 @@ const ItemDashboard = (props) => {
                 return(//item small not loading
                     <View style={styleLarge.item} >
                         <TouchableOpacity style={styleLarge.dotsBox}
-                            onPress={()=>props.bottomSheet.current.open()}
+                            onPress={()=>{    
+                                //console.log(bottomSheetRef);                      
+                                bottomSheetRef.current.open();                                                
+                                }
+                            }
                         >
                             <Entypo name="dots-three-vertical" style={styleLarge.dots}/>
                         </TouchableOpacity>
@@ -81,7 +88,7 @@ const ItemDashboard = (props) => {
                             </View>
                             
                         </View>
-                        
+                        <BottomSheet refere={bottomSheetRef} item={props.item}/>
                     </View>
                 );
         }
