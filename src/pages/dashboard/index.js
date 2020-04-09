@@ -12,6 +12,7 @@ import {
   TextInput,
   Button
 } from 'react-native'
+
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -169,9 +170,9 @@ const Index = () => {
               </TouchableOpacity>
 
           </View>
-          </View>
-        <DashBoard mode="large" context={drawerRef.current} data={currentList}/>
-      </DrawerLayoutAndroid>
+        </View>
+        <DashBoard mode="large" data={currentList}/>
+       </DrawerLayoutAndroid>
     );
 
 }

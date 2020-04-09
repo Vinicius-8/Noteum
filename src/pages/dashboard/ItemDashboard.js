@@ -64,8 +64,13 @@ const ItemDashboard = (props) => {
         }else if(props.size === 'large'){
                 return(//item small not loading
                     <View style={styleLarge.item} >
-                        
-                        <Image source={props.item.image} style={styleLarge.image} />
+                        <TouchableOpacity style={styleLarge.dotsBox}
+                            onPress={()=>props.bottomSheet.current.open()}
+                        >
+                            <Entypo name="dots-three-vertical" style={styleLarge.dots}/>
+                        </TouchableOpacity>
+                        <Image source={props.item.image} style={styleLarge.image} >                
+                        </Image>
                     
                         <View style={styleLarge.textBox}>
                             <View style={styleLarge.titleBox}>
@@ -76,7 +81,7 @@ const ItemDashboard = (props) => {
                             </View>
                             
                         </View>
-                    
+                        
                     </View>
                 );
         }
@@ -131,6 +136,20 @@ const styleLarge = StyleSheet.create({
     },
     text:{
         color:'#e5e5e5'
+    },
+    dotsBox:{
+        position:'absolute',
+        right: 0,
+        zIndex: 1,
+        height: 35,
+        width: 35,
+        justifyContent:'center',
+        alignItems:'center',
+        //backgroundColor: 'red',
+    },
+    dots:{
+        color:'snow',
+        fontSize: 20
     }
 });
 
