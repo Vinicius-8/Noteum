@@ -7,7 +7,7 @@ import BottomSheet  from './bottomSheet'
 
 
 const ItemDashboard = (props) => {
-    const bottomSheetRef = useRef();
+    const bottomSheetRef = useRef(); // eu crio a refenrencia no item mas passo ela como prop para o bottom sheet
 
     if(props.isLoading){
         if(props.size === 'small'){

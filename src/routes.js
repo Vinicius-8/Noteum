@@ -12,7 +12,7 @@ const Routes = () => {
     return(        
         <NavigationContainer >
             <AppStack.Navigator 
-                initialRouteName="Dashboard"
+                initialRouteName="Login"
                 screenOptions={{ gestureEnabled: false }}>
                 <AppStack.Screen name="Login" component={Login}  options={{ headerShown: false }}/>
                 <AppStack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
