@@ -14,5 +14,5 @@ web-report/
 .DS_Store
 
 dataTests
-credentials.js
 src/credentials.js
+credentials.js
