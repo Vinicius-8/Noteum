@@ -1,5 +1,5 @@
-import React,{ useEffect } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import { Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
 import * as Google from "expo-google-app-auth";
@@ -14,16 +14,24 @@ import logoImg from '../../../assets/icon.png'
 
 const Login = () => {
     const navigation = useNavigation();
-
+    const [loading, setLoading] = useState(false);
+    
     async function loginWithGoogle(){
-        /*await api.post('register', {email:'vini@fkic.com', password:'222'})
-        .then(response => {
-            console.log(response.data);
-        })
-        await api.get('/')
-        .then(response => {
-            console.log(response.data);
-        })*/
+        var googleData = await signInWithGoogle()
+        if(googleData.cancelled === true){
+          return Alert.alert("Falha", 'Não foi possível realizar o login')
+        }else{
+          await api.post('login', googleData)
+            .then(response => {
+                console.log(response.data);
+            })
+        
+            /*
+          await api.get('/')
+          .then(response => {
+              console.log(response.data);
+          })*/
+      }
     }
 
     signInWithGoogle = async () => {
@@ -32,30 +40,26 @@ const Login = () => {
             androidClientId: Credentials.default.androidId,
             scopes: ["profile", "email"]
           });
-    
-          if (result.type === "success") {
-           
-            console.log('------------------------------------');
-            
-            console.log('dados do user: ', result.user);
-            console.log('token: ', result.accessToken);
-            
-            return result.accessToken;
+
+          if (result.type === "success") {                                                      
+              var response = {
+                email: result.user.email,
+                id: result.user.id,
+                name: result.user.name,
+                photo_url: result.user.photoUrl,
+                token: result.idToken            
+              }
+              return response;
           } else {
-            return { cancelled: true };
+              return { cancelled: true };
           }
         } catch (e) {
-          console.log('LoginScreen.js.js 50 | Error with login', e);
+          console.log('LoginScreen.js 60 | Error with login', e);
           return { error: true };
         }
       };
 
-    
-    
-    
-    
-    
-    
+
     function goDashboard() {
         navigation.navigate('Dashboard');
     }    
@@ -67,7 +71,8 @@ const Login = () => {
                 
                 <Text style={style.text}>Login: </Text>
                 <TouchableOpacity onPress={()=>{
-                        signInWithGoogle()
+                        //signInWithGoogle()
+                        loginWithGoogle()
                     }}>
                     <View style={style.loginBox}>
                         <Text>Logar com o Google+</Text>
