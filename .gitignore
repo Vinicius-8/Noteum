@@ -12,7 +12,7 @@ web-report/
 
 # macOS
 .DS_Store
-
+.vscode
 dataTests
 src/credentials.js
 credentials.js
