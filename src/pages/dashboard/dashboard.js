@@ -9,7 +9,8 @@ import ItemDash from './ItemDashboard'
 
 const Dashboard = (props) => {  
     const [loading, setLoading] = useState(false);
-        
+
+    
 
     function touched(item){
         console.log('tocou no item: ', item.title);

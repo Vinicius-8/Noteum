@@ -10,8 +10,9 @@ import {
   Alert,
   TouchableWithoutFeedback,
   TextInput,
-  Button
 } from 'react-native'
+
+import api from '../../services/api'
 
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -20,20 +21,21 @@ import DashBoard from './dashboard'
 import style from './indexStyle'
 
 
-const Index = () => {
+const Index = (props) => {
     const drawerRef = useRef();
     const [currentList, setCurrentList] = useState({id:0, name:'Todos'});
     const [isModalVisible, setIsModalVisible] = useState(false);
-    
+    //console.log('-[dashboard]-> datauser: ',props.route.params);
+    /*
     var data = [ // dados do menu drawer
       {id:0,name:'Todos'},
       {id:1,name:'Noticias'},
       {id:2,name:'Eventos'},
       {id:3,name:'Memes'},
       {id:4,name:'Receitas'},
-    ];
+    ];*/
 
-    const [drawerLists, setDrawerLists] = useState(data)
+    const [drawerLists, setDrawerLists] = useState(props.route.params.lists)
 
     useEffect(() => { // leave the app
       const backAction = () => {
@@ -74,8 +76,22 @@ const Index = () => {
       function saveNewList(){
         if(!newDrawerListText)
           return
+        try {
+          // criar nova lista
+          api.post('lists', {
+            title: newDrawerListText,       
+          },{
+          headers:{
+            'User-id': props.route.params.id,
+          }}
+            )
+            .then(response => {//console.log(response);
+          });
+        } catch (error) {
+          
+        }
         setIsModalVisible(false);
-        drawerLists.push({id:drawerLists.length, name: newDrawerListText});
+        drawerLists.push({id:drawerLists.length, title: newDrawerListText});
         setDrawerLists(drawerLists);
         drawerRef.current.openDrawer();
       }
@@ -127,12 +143,14 @@ const Index = () => {
           data={drawerLists}
           showsVerticalScrollIndicator={false}
           keyExtractor={data => String(data.id)}
+          
           renderItem={(
             ({item}) => 
-              <TouchableOpacity style={style.drawerItem} onPress={
-                ()=> selectDrawerItem({item})
+              <TouchableOpacity style={currentList === item ? style.drawerItemSelected :style.drawerItem } onPress={
+                ()=> selectDrawerItem({item})            
+                
               }>
-                <Text numberOfLines={2} style={style.drawerItemText}>{item.name}</Text>
+                <Text numberOfLines={2}  style={style.drawerItemText}>{item.title}</Text>
               </TouchableOpacity>
             )
           }
@@ -161,7 +179,7 @@ const Index = () => {
                   <SimpleLineIcons name="menu" size={28} color="white"/>
               </TouchableOpacity>
               <View style={style.titleBox}>
-                  <Text style={style.title}>{currentList.name}</Text>
+                  <Text style={style.title}>{currentList.title}</Text>
               </View>
               <TouchableOpacity style={style.plusBox}
                   

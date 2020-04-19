@@ -28,6 +28,7 @@ const Login = () => {
     // logado
 
     async function loginWithAllData(){
+        setLoading(true)
         var googleData = await signInWithGoogle()
         if(googleData.cancelled === true){
           return Alert.alert("Falha", 'Não foi possível realizar o login')
@@ -38,25 +39,52 @@ const Login = () => {
           })
           await api.post('users', googleData)
             .then(response => {
-                console.log(response.data);
-            })
+                if(response.status == 201){
+                  //login sucess
+                  //console.log('[loginAllData]-> dados user: ', response.data); 
+                  console.log('[loginAllData]-> 201 success');                  
+                  goDashboard(response.data)                                   
+                }else {
+                  //não falhou mas foi diferente de 200
+                  console.log('[loginAllData][>200] a response foi:  ', response.status);    
+                }
+                
+            }).catch(err => {
+              //fail
+              console.log('Login: ', err.response.status)
+              if(err.response.status == 401){
+                // login falhou
+                setLoading(false)
+              }
+            
+            });
                   
       }
     }
 
     async function simpleLogin(){
-
-      await api.post('login', {
+  
+      var data = {
         "email": userData.email,
         "token": userData.token
+      }
+      
+      await api.post('login',data)
+      .then(res => {
+        //success
+        //console.log('200>>>>', res.data)
+        goDashboard(res.data)
       })
-        .then(response => {
-            console.log(response.data);
-            if(response.data.status_code == 401){
-              // login falhou
-              setLoading(false)
-            }
-      })
+      .catch(err => {
+        //fail
+        console.log('Login: ', err.response.status)
+        if(err.response.status == 401){
+          // login falhou
+          setLoading(false)
+        }
+      
+      });
+
     }
 
     var signInWithGoogle = async () => {
@@ -85,8 +113,8 @@ const Login = () => {
         }
       };
 
-    function goDashboard() {
-        navigation.navigate('Dashboard');
+    function goDashboard(data) {
+        navigation.navigate('Dashboard', data);
     }
     
     useEffect(()=>{
@@ -96,14 +124,9 @@ const Login = () => {
     }, []);
     useEffect(()=>{
       if(userData!=null){
-        console.log('partindo para o login...', userData); 
+        //console.log('partindo para o login...', userData); 
         simpleLogin()       
-      }/*else{
-        console.log('salvando novos dados...', userData); 
-        Secure('credentials', userData).then(
-          json => setUserData(json)
-        )
-      }*/
+      }
     },[userData])
 
 
@@ -116,7 +139,7 @@ const Login = () => {
                 <Text style={style.text}>Login: </Text>
                 <TouchableOpacity onPress={async ()=>{
                       loginWithAllData();
-                      //console.log(userData);                    
+                      //console.log(userData);
                     }}>
                     
                       <View style={style.loginBox}>

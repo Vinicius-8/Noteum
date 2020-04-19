@@ -17,6 +17,15 @@ const indexStyle = StyleSheet.create({
         justifyContent:'center',
         paddingLeft: 20
     },
+    drawerItemSelected:{
+        height:50,
+        borderBottomWidth: .2,
+        borderBottomColor:'#262C38',
+        backgroundColor: '#575E78',
+        alignItems:'flex-start',
+        justifyContent:'center',
+        paddingLeft: 20
+    },
     drawerItemText:{
       color:'snow',
       fontSize: 17,
