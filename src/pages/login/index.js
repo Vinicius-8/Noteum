@@ -1,46 +1,72 @@
-import React, {useState} from 'react';
-import { Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import React, {useState, useEffect, } from 'react';
+import { Text, View, Image, TouchableOpacity, Alert, ProgressBarAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
 import * as Google from "expo-google-app-auth";
 
 import * as Credentials from '../../credentials'
 import api from '../../services/api'
-
+import Secure from '../../services/store'
 
 import style from './loginStyle'
 import logoImg from '../../../assets/icon.png'
 
 
 const Login = () => {
-    const navigation = useNavigation();
-    const [loading, setLoading] = useState(false);
+    const navigation = useNavigation();    
+    const [loading, setLoading] = useState(true);
+    const [userData, setUserData] = useState(null);
     
-    async function loginWithGoogle(){
+    // buscar dados locais 
+    // tentar logar
+    // logado
+
+    //não conseguiu logar
+    // login com o google
+    // salva dados locais
+    // tenta logar
+    // logado
+
+    async function loginWithAllData(){
         var googleData = await signInWithGoogle()
         if(googleData.cancelled === true){
           return Alert.alert("Falha", 'Não foi possível realizar o login')
         }else{
-          await api.post('login', googleData)
+          Secure('credentials', {
+            email: googleData.email,
+            token: googleData.token
+          })
+          await api.post('users', googleData)
             .then(response => {
                 console.log(response.data);
             })
-        
-            /*
-          await api.get('/')
-          .then(response => {
-              console.log(response.data);
-          })*/
+                  
       }
     }
 
-    signInWithGoogle = async () => {
+    async function simpleLogin(){
+
+      await api.post('login', {
+        "email": userData.email,
+        "token": userData.token
+      })
+        .then(response => {
+            console.log(response.data);
+            if(response.data.status_code == 401){
+              // login falhou
+              setLoading(false)
+            }
+      })
+    }
+
+    var signInWithGoogle = async () => {
         try {
           const result = await Google.logInAsync({
             androidClientId: Credentials.default.androidId,
             scopes: ["profile", "email"]
           });
-
+          //console.log('-idtoken-->'+ result.idToken);
+          //console.log('-refreshToken-->'+ result.refreshToken);
           if (result.type === "success") {                                                      
               var response = {
                 email: result.user.email,
@@ -59,26 +85,48 @@ const Login = () => {
         }
       };
 
-
     function goDashboard() {
         navigation.navigate('Dashboard');
-    }    
+    }
+    
+    useEffect(()=>{
+      Secure('credentials', null).then(
+        json => setUserData(json)
+      )
+    }, []);
+    useEffect(()=>{
+      if(userData!=null){
+        console.log('partindo para o login...', userData); 
+        simpleLogin()       
+      }/*else{
+        console.log('salvando novos dados...', userData); 
+        Secure('credentials', userData).then(
+          json => setUserData(json)
+        )
+      }*/
+    },[userData])
+
 
     return(
         <View style={style.container}>
             <Image source={logoImg} style={style.image}/>
-            <View style={style.middleBox}>
+            { !loading ? 
+              <View style={style.middleBox}>
                 
                 <Text style={style.text}>Login: </Text>
-                <TouchableOpacity onPress={()=>{
-                        //signInWithGoogle()
-                        loginWithGoogle()
+                <TouchableOpacity onPress={async ()=>{
+                      loginWithAllData();
+                      //console.log(userData);                    
                     }}>
-                    <View style={style.loginBox}>
-                        <Text>Logar com o Google+</Text>
-                    </View>
+                    
+                      <View style={style.loginBox}>
+                          <Text>Logar com o Google+</Text>
+                      </View> 
                 </TouchableOpacity>
-            </View>
+              </View>
+          :
+            <ProgressBarAndroid styleAttr="Normal"/>
+        }  
         </View>
     );
 }
