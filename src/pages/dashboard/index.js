@@ -10,9 +10,13 @@ import {
   Alert,
   TouchableWithoutFeedback,
   TextInput,
+  Clipboard,
+  ProgressBarAndroid,
+  Image,
 } from 'react-native'
 
 import api from '../../services/api'
+import Secure from '../../services/store'
 
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -23,20 +27,15 @@ import style from './indexStyle'
 
 const Index = (props) => {
     const drawerRef = useRef();
-    const [currentList, setCurrentList] = useState({id:0, name:'Todos'});
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalNewItemVisible, setIsModalNewItemVisible] = useState(false);
+    const [drawerLists, setDrawerLists] = useState(props.route.params.user.lists)
+    const [currentList, setCurrentList] = useState(drawerLists[0]);
+    
+
+    const USER = props.route.params.user
+    const TOKEN = props.route.params.token
     //console.log('-[dashboard]-> datauser: ',props.route.params);
-    /*
-    var data = [ // dados do menu drawer
-      {id:0,name:'Todos'},
-      {id:1,name:'Noticias'},
-      {id:2,name:'Eventos'},
-      {id:3,name:'Memes'},
-      {id:4,name:'Receitas'},
-    ];*/
-
-    const [drawerLists, setDrawerLists] = useState(props.route.params.lists)
-
     useEffect(() => { // leave the app
       const backAction = () => {
         Alert.alert("Atenção!", "Tem certeza que quer sair?", [
@@ -59,7 +58,6 @@ const Index = (props) => {
     }, []);
 
 
-
     function selectDrawerItem({item}){
       setCurrentList(item)
       drawerRef.current.closeDrawer();
@@ -70,7 +68,7 @@ const Index = (props) => {
       setIsModalVisible(true)
     }
 
-    const ModalScreen = () =>{
+    const ModalNewListScreen = () =>{
       const [newDrawerListText, setNewDrawerListText] = useState('');
 
       function saveNewList(){
@@ -78,20 +76,24 @@ const Index = (props) => {
           return
         try {
           // criar nova lista
+          //console.log('[saveNewList]-> ', props.route.params);
+          
           api.post('lists', {
             title: newDrawerListText,       
           },{
           headers:{
-            'User-id': props.route.params.id,
+            'User-id': USER.id,
+            'Authorization': "Bearer "+ TOKEN
           }}
             )
             .then(response => {//console.log(response);
           });
         } catch (error) {
-          
+            console.log('-[saveNewList]-> ', error);
+            
         }
         setIsModalVisible(false);
-        drawerLists.push({id:drawerLists.length, title: newDrawerListText});
+        drawerLists.push({id:drawerLists.length+1, title: newDrawerListText});
         setDrawerLists(drawerLists);
         drawerRef.current.openDrawer();
       }
@@ -105,7 +107,7 @@ const Index = (props) => {
             <View style={style.modalContainer} >
               <TouchableWithoutFeedback>
                   <View style={style.modalBox} >
-                    <Text style={ style.modalTitle } >Nova lista:</Text>
+                    <Text style={ style.modalTitle }>Nova lista:</Text>
                     
                     <TextInput numberOfLines={2} maxLength={50} multiline={true}
                       placeholder="Nome da lista" selectionColor={'snow'}
@@ -135,10 +137,165 @@ const Index = (props) => {
       );
     } 
 
+    const ModalNewItem = () => {
+      const [newUrl, setNewUrl] = useState('');
+      const [loading, setLoading] = useState(isModalNewItemVisible)
+      const [isLoaded, setIsLoaded] = useState(true)
+      const [openGraphData, setOpenGraphData] = useState({})
+      function validURL(str) {
+        var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+          '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return !!pattern.test(str);
+      }
+
+      async function readFromClipboard (){   
+        const clipboardContent = await Clipboard.getString();
+        if(validURL(clipboardContent) && loading){
+          console.log('validou como url');
+          
+          api.get('/api?url='+clipboardContent,
+          {
+            headers:{
+              "Authorization": "Bearer "+TOKEN
+            }
+          })
+          .then(response=> {
+            //console.log(response.data); 
+            d = response.data
+            d['s']= 'Salvar'
+            d['c'] = 'Cancelar'
+
+            //setOpenGraphData(response.data)                        
+            setOpenGraphData(d)            
+          })
+          .catch(err=>{
+            console.log(err.response.status);
+          })
+        }else{
+          setLoading(false)
+        }
+        var lastlink = await Secure('lastLink')  
+        if (lastlink !== clipboardContent){            
+          setNewUrl(clipboardContent)        
+        }
+        setLoading(false)
+        return clipboardContent.toString()
+      };
+    
+      function saveLinkLocally(){
+        Secure('lastLink', newUrl)
+      }
+    
+      const InputContainer = () =>{
+        return(
+           <View style={style.modalContainer} >
+             
+            <TouchableWithoutFeedback>
+                <View style={style.modalBox} >
+                {!loading ?   
+                <View>
+                    <Text style={ style.modalTitle }>Link:</Text>
+                            
+                    <TextInput maxLength={50}  multiline={false}
+                      //selection={{start: 0, end: 0}}
+                      
+                      placeholder="link copiado" selectionColor={'snow'}
+                      style={style.inputModal}
+                      onChangeText={
+                        text => setNewUrl(text)
+                      }
+                      defaultValue={ newUrl }
+                      autoFocus={true}                  
+                      />
+                    
+                    <View style={style.buttonsBar}>
+                      <TouchableOpacity onPress={ ()=> {setIsModalNewItemVisible(false);setLoading(false)} }
+                        style={style.barButton}>
+    
+                        <Text style={style.barButtonText}>Cancelar</Text>
+                      </TouchableOpacity>
+          
+                      <TouchableOpacity style={style.barButton}
+                        onPress={()=> {
+                          saveLinkLocally()
+                          setIsModalNewItemVisible(false)
+                          setLoading(false)
+                          }
+                        }
+                      >
+                        <Text style={style.barButtonText}>Salvar</Text>
+                      </TouchableOpacity>
+                    </View>     
+                  </View>
+                : <ProgressBarAndroid styleAttr="Normal" color={'#fff'}/>} 
+                </View>
+              </TouchableWithoutFeedback>
+              
+          </View>
+        );
+      }
+    
+      const ItemContainer = () =>{
+        return(
+          <View style={style.modalContainer} >
+            <TouchableWithoutFeedback>
+                <View style={style.MNIBox} >
+                    <Image  style={style.MNIImage} 
+                    source={{uri: openGraphData.image}}                                                           
+                    />
+                    <View style={style.MNITextBox}>
+                      <Text style={style.MNITitle} numberOfLines={2}>
+                        {openGraphData.title}
+                      </Text> 
+                      <Text style={style.MNIDescription} numberOfLines={3}>
+                        {openGraphData.description}
+                      </Text> 
+                    </View>
+                    
+                    <View style={style.MNIButtonsBar}>
+                     
+                      <TouchableOpacity onPress={ ()=> setIsModalNewItemVisible(false) }
+                        style={style.barButton}>
+      
+                        <Text style={style.barButtonText}>{openGraphData.c}</Text>
+                      </TouchableOpacity>
+          
+                      <TouchableOpacity style={style.barButton} >
+                        <Text style={style.barButtonText}>{openGraphData.s}</Text>
+                      </TouchableOpacity>
+                    </View>
+                </View>
+              </TouchableWithoutFeedback>
+          </View>
+        );
+      }
+    
+      useEffect(()=>{
+        readFromClipboard()
+        setLoading(false)
+      },[]);
+    
+      return(
+          <Modal animationType='fade' transparent={true} visible={isModalNewItemVisible}>
+            <TouchableWithoutFeedback
+              onPress={ ()=>{ setIsModalVisible(false) } }
+            >        
+              {!isLoaded ? <InputContainer/> : <ItemContainer/>}
+
+            </TouchableWithoutFeedback>
+          </Modal>
+        );
+    }
+
     const navigationView = ( // gera os itens no menu drawer
       <View style={style.drawerContainer}>
-        <ModalScreen />
-        
+        <ModalNewListScreen />
+        <ModalNewItem/>
+
         <FlatList
           data={drawerLists}
           showsVerticalScrollIndicator={false}
@@ -148,7 +305,6 @@ const Index = (props) => {
             ({item}) => 
               <TouchableOpacity style={currentList === item ? style.drawerItemSelected :style.drawerItem } onPress={
                 ()=> selectDrawerItem({item})            
-                
               }>
                 <Text numberOfLines={2}  style={style.drawerItemText}>{item.title}</Text>
               </TouchableOpacity>
@@ -156,9 +312,7 @@ const Index = (props) => {
           }
         />
         <TouchableOpacity style={[style.drawerItem, {backgroundColor:'#262C38'}]} 
-        onPress={
-          createNewDrawerList
-        }>
+        onPress={ createNewDrawerList }>
             <Text style={style.drawerItemText}>+ Nova lista</Text>
         </TouchableOpacity>
       </View>
@@ -182,7 +336,8 @@ const Index = (props) => {
                   <Text style={style.title}>{currentList.title}</Text>
               </View>
               <TouchableOpacity style={style.plusBox}
-                  
+                  onPress={()=> setIsModalNewItemVisible(true)
+                  } // code for new item
               >
                   <AntDesign name="plus" size={28} color="white"/>
               </TouchableOpacity>

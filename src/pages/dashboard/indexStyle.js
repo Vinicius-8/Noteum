@@ -3,6 +3,53 @@ import Constants from 'expo-constants'
 
 
 const indexStyle = StyleSheet.create({
+    // Moldal new Item
+    MNIBox:{
+        width: 330,
+        minHeight:  280,
+        borderRadius: 5,
+        backgroundColor:'#6A7291',
+        flexDirection:'column',
+        //justifyContent:'space-around',    
+    },
+    MNIImage:{
+        marginTop: 2,
+        alignSelf:'center',
+        width: 320, 
+        height: 180,
+        borderTopLeftRadius: 3,
+        borderTopRightRadius: 3,
+    },
+    MNITextBox:{
+        //backgroundColor: 'black'
+    },
+    MNITitle:{
+        marginTop: 5,
+        paddingLeft: 10,
+        paddingBottom: 3,
+        color: 'snow',
+        fontSize: 19,
+        fontWeight:'bold',
+        //backgroundColor: '#596180'
+        borderBottomWidth: 1,
+        borderBottomColor: '#596180'
+    },
+    MNIDescription:{
+        marginTop: 5,
+        paddingLeft: 10,
+        color: '#e5e5e5',
+        fontSize: 14,
+        //backgroundColor: '#596180',        
+        borderBottomColor: '#596180',
+    },
+    MNIButtonsBar:{
+        //position:'absolute',
+        //bottom:-2,
+        //right:0,
+        flexDirection:'row',
+        justifyContent:'flex-end', 
+        marginBottom: -4       
+    },
     //drawer    drawer  drawer  drawer
     drawerContainer: {
         flex:1,
@@ -61,11 +108,15 @@ const indexStyle = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         //backgroundColor:'#080808',
-        borderRadius: 2
+        borderRadius: 2,
     },
     barButtonText:{
         color:'snow',
-        fontSize: 17
+        fontSize: 17,
+    },
+    barButtonTextPaste:{
+        color:'snow',
+        fontSize: 17,
     },
     inputModal: {
         margin: 15,

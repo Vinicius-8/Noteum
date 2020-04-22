@@ -37,12 +37,18 @@ const Login = () => {
             email: googleData.email,
             token: googleData.token
           })
-          await api.post('users', googleData)
+          await api.post('users', googleData,
+          {
+            headers:{
+              'Authorization': "Bearer "+ googleData.token,
+            }
+          }
+          )
             .then(response => {
                 if(response.status == 201){
                   //login sucess
                   //console.log('[loginAllData]-> dados user: ', response.data); 
-                  console.log('[loginAllData]-> 201 success');                  
+                  //console.log('[loginAllData]-> 201 success');                  
                   goDashboard(response.data)                                   
                 }else {
                   //não falhou mas foi diferente de 200
@@ -51,11 +57,10 @@ const Login = () => {
                 
             }).catch(err => {
               //fail
-              console.log('Login: ', err.response.status)
-              if(err.response.status == 401){
+              console.log('Alldata: ', err.response.status)
+              
                 // login falhou
                 setLoading(false)
-              }
             
             });
                   
@@ -69,20 +74,21 @@ const Login = () => {
         "token": userData.token
       }
       
-      await api.post('login',data)
+      await api.post('login',{ "email": data.email}, {
+        headers:{
+          'Authorization': "Bearer "+ data.token,
+        }
+      })
       .then(res => {
         //success
         //console.log('200>>>>', res.data)
-        goDashboard(res.data)
+        //res.data.push({'token': data.token})
+        goDashboard(res.data, data.token)
       })
       .catch(err => {
         //fail
         console.log('Login: ', err.response.status)
-        if(err.response.status == 401){
-          // login falhou
-          setLoading(false)
-        }
-      
+        setLoading(false)
       });
 
     }
@@ -113,8 +119,12 @@ const Login = () => {
         }
       };
 
-    function goDashboard(data) {
-        navigation.navigate('Dashboard', data);
+    function goDashboard(data, token) {
+        var datas = {
+          user: data,
+          token: token 
+        } 
+        navigation.navigate('Dashboard', datas);
     }
     
     useEffect(()=>{
