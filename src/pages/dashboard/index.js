@@ -23,6 +23,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import DashBoard from './dashboard'
 import style from './indexStyle'
+import { render } from 'react-dom';
 
 
 const Index = (props) => {
@@ -152,10 +153,20 @@ const Index = (props) => {
         return !!pattern.test(str);
       }
 
-      async function readFromClipboard (){   
+      async function readFromClipboard(){
         const clipboardContent = await Clipboard.getString();
+        
+        var lastlink = await Secure('lastLink')  
+        if (lastlink !== clipboardContent){            
+          setNewUrl(clipboardContent)        
+        }                
+        return clipboardContent.toString()
+      }
+      async function loadData (){   
+        var clipboardContent =await readFromClipboard()        
+        setLoading(true)
         if(validURL(clipboardContent) && loading){
-          console.log('validou como url');
+          //console.log('validou como url');
           
           api.get('/api?url='+clipboardContent,
           {
@@ -166,24 +177,22 @@ const Index = (props) => {
           .then(response=> {
             //console.log(response.data); 
             d = response.data
-            d['s']= 'Salvar'
-            d['c'] = 'Cancelar'
+            d.s = 'Salvar'
+            d.c = 'Cancelar'
 
             //setOpenGraphData(response.data)                        
-            setOpenGraphData(d)            
+            setOpenGraphData(d)             
+            setIsLoaded(true)  
+            setLoading(false)       
           })
           .catch(err=>{
             console.log(err.response.status);
+            setIsLoaded(false)
           })
         }else{
           setLoading(false)
+          setIsLoaded(false)
         }
-        var lastlink = await Secure('lastLink')  
-        if (lastlink !== clipboardContent){            
-          setNewUrl(clipboardContent)        
-        }
-        setLoading(false)
-        return clipboardContent.toString()
       };
     
       function saveLinkLocally(){
@@ -192,6 +201,9 @@ const Index = (props) => {
     
       const InputContainer = () =>{
         return(
+          <TouchableWithoutFeedback
+            onPress={()=> setIsModalNewItemVisible(false)}
+          >
            <View style={style.modalContainer} >
              
             <TouchableWithoutFeedback>
@@ -236,17 +248,49 @@ const Index = (props) => {
               </TouchableWithoutFeedback>
               
           </View>
+          </TouchableWithoutFeedback>
         );
       }
+
+      
     
       const ItemContainer = () =>{
+        const [itemSelected, setItemSelected ]= useState({})
+        const [isListVisible, setIsListVisible] = useState(false);
+        const ListToSaveMenu =()=> (<View style={style.MNIBox} >
+          <FlatList
+            data={drawerLists}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={data => String(data.id)}
+            
+            renderItem={(
+              ({item}) => 
+                <TouchableOpacity onPress={
+                  ()=> setItemSelected({item})            
+                }>
+                  <Text numberOfLines={2}  style={style.drawerItemText}>{item.title}</Text>
+                </TouchableOpacity>
+              )
+            }
+          />
+        </View>)
+        
         return(
-          <View style={style.modalContainer} >
+          <TouchableWithoutFeedback
+            onPress={()=> setIsModalNewItemVisible(false)}
+          >
+          <View style={style.modalContainer}>
             <TouchableWithoutFeedback>
+                {!isListVisible ?
                 <View style={style.MNIBox} >
+                  {!loading ?
                     <Image  style={style.MNIImage} 
                     source={{uri: openGraphData.image}}                                                           
                     />
+                    : <View style={{paddingTop: 100}}>
+                        <ProgressBarAndroid
+                        styleAttr="Normal" color={'#fff'}/> 
+                      </View>}
                     <View style={style.MNITextBox}>
                       <Text style={style.MNITitle} numberOfLines={2}>
                         {openGraphData.title}
@@ -256,37 +300,43 @@ const Index = (props) => {
                       </Text> 
                     </View>
                     
-                    <View style={style.MNIButtonsBar}>
-                     
+                    <View style={style.MNIButtonsBar}>                      
                       <TouchableOpacity onPress={ ()=> setIsModalNewItemVisible(false) }
                         style={style.barButton}>
       
                         <Text style={style.barButtonText}>{openGraphData.c}</Text>
                       </TouchableOpacity>
           
-                      <TouchableOpacity style={style.barButton} >
+                      <TouchableOpacity style={style.barButton} 
+                        onPress={
+                          ()=>{
+                            saveLinkLocally()
+                            //setIsModalNewItemVisible(false)
+                            setIsListVisible(true)
+                          }
+                        }
+                      >
                         <Text style={style.barButtonText}>{openGraphData.s}</Text>
                       </TouchableOpacity>
                     </View>
-                </View>
+                </View> : <ListToSaveMenu/>}
               </TouchableWithoutFeedback>
           </View>
+          </TouchableWithoutFeedback>
         );
       }
     
       useEffect(()=>{
-        readFromClipboard()
+        loadData()
         setLoading(false)
       },[]);
     
       return(
-          <Modal animationType='fade' transparent={true} visible={isModalNewItemVisible}>
-            <TouchableWithoutFeedback
-              onPress={ ()=>{ setIsModalVisible(false) } }
-            >        
-              {!isLoaded ? <InputContainer/> : <ItemContainer/>}
 
-            </TouchableWithoutFeedback>
+        
+          <Modal animationType='fade' transparent={true} visible={isModalNewItemVisible}>
+            
+              {!isLoaded ? <InputContainer/> : <ItemContainer/>}
           </Modal>
         );
     }
