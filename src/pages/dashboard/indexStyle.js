@@ -7,6 +7,7 @@ const indexStyle = StyleSheet.create({
     MNIBox:{
         width: 330,
         minHeight:  280,
+        maxHeight: 320,
         borderRadius: 5,
         backgroundColor:'#6A7291',
         flexDirection:'column',
@@ -49,6 +50,17 @@ const indexStyle = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'flex-end', 
         marginBottom: -4       
+    },
+    MNIListContainer:{
+        justifyContent:'center',    
+        alignItems:  'center',    
+        padding: 10,
+        borderBottomColor:'#43485C',
+        borderBottomWidth: .6,
+    },
+    MNIListText:{
+        fontSize: 20,
+        color:'snow',
     },
     //drawer    drawer  drawer  drawer
     drawerContainer: {

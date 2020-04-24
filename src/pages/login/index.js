@@ -33,10 +33,10 @@ const Login = () => {
         if(googleData.cancelled === true){
           return Alert.alert("Falha", 'Não foi possível realizar o login')
         }else{
-          Secure('credentials', {
-            email: googleData.email,
-            token: googleData.token
-          })
+            Secure('credentials', {
+              email: googleData.email,
+              token: googleData.token
+            })
           await api.post('users', googleData,
           {
             headers:{

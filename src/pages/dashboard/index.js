@@ -23,7 +23,6 @@ import { AntDesign } from '@expo/vector-icons';
 
 import DashBoard from './dashboard'
 import style from './indexStyle'
-import { render } from 'react-dom';
 
 
 const Index = (props) => {
@@ -163,7 +162,7 @@ const Index = (props) => {
         return clipboardContent.toString()
       }
       async function loadData (){   
-        var clipboardContent =await readFromClipboard()        
+        var clipboardContent = await readFromClipboard()        
         setLoading(true)
         if(validURL(clipboardContent) && loading){
           //console.log('validou como url');
@@ -171,7 +170,7 @@ const Index = (props) => {
           api.get('/api?url='+clipboardContent,
           {
             headers:{
-              "Authorization": "Bearer "+TOKEN
+              "Authorization": "Bearer "+ TOKEN
             }
           })
           .then(response=> {
@@ -181,7 +180,8 @@ const Index = (props) => {
             d.c = 'Cancelar'
 
             //setOpenGraphData(response.data)                        
-            setOpenGraphData(d)             
+            setOpenGraphData(d)
+            //console.log('ogdata: ',d); 
             setIsLoaded(true)  
             setLoading(false)       
           })
@@ -255,9 +255,37 @@ const Index = (props) => {
       
     
       const ItemContainer = () =>{
-        const [itemSelected, setItemSelected ]= useState({})
         const [isListVisible, setIsListVisible] = useState(false);
+
+        async function createItem(lista){
+          if(lista != null && openGraphData!=null){
+            api.post('items', {
+              title: openGraphData.title,
+              description: openGraphData.description,
+              img_url: openGraphData.image,
+              url: openGraphData.url
+            },
+            
+            {
+              headers:{
+                "Owner-id": USER.id,
+                "Owner-list-id": lista.id,
+                "Authorization": "Bearer "+TOKEN
+              }
+            })
+            .then(response =>  {console.log('[createItem] response: ', response)
+              Alert.alert("Salvo", "Seu item foi salvo na lista ", lista.title)
+            })
+            .catch(err => console.log('[createItem] error : ',err))
+          }else{
+            Alert.alert("Erro", "O item não pode ser criado")            
+          }          
+          setIsModalNewItemVisible(false)
+        }
+
+
         const ListToSaveMenu =()=> (<View style={style.MNIBox} >
+          <Text style={[style.MNITitle, {backgroundColor:'#596180'}]}>Salvar em: </Text>
           <FlatList
             data={drawerLists}
             showsVerticalScrollIndicator={false}
@@ -265,10 +293,10 @@ const Index = (props) => {
             
             renderItem={(
               ({item}) => 
-                <TouchableOpacity onPress={
-                  ()=> setItemSelected({item})            
+                <TouchableOpacity style={style.MNIListContainer} onPress={
+                  ()=> createItem(item)                   
                 }>
-                  <Text numberOfLines={2}  style={style.drawerItemText}>{item.title}</Text>
+                  <Text numberOfLines={2}  style={style.MNIListText}>{item.title}</Text>
                 </TouchableOpacity>
               )
             }
