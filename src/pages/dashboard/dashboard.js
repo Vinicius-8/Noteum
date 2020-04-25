@@ -9,8 +9,9 @@ import ItemDash from './ItemDashboard'
 
 const Dashboard = (props) => {  
     const [loading, setLoading] = useState(false);
-
-    
+    //console.log('[dashboard]-> ', props);
+    const data = props.data.items
+    const exibitionMode = props.mode
 
     function touched(item){
         console.log('tocou no item: ', item.title);

@@ -29,7 +29,8 @@ const Login = () => {
 
     async function loginWithAllData(){
         setLoading(true)
-        var googleData = await signInWithGoogle()
+        var googleData = await signInWithGoogle() 
+        
         if(googleData.cancelled === true){
           return Alert.alert("Falha", 'Não foi possível realizar o login')
         }else{

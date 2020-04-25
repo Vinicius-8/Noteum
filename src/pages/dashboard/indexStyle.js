@@ -7,7 +7,7 @@ const indexStyle = StyleSheet.create({
     MNIBox:{
         width: 330,
         minHeight:  280,
-        maxHeight: 320,
+        maxHeight: 335,
         borderRadius: 5,
         backgroundColor:'#6A7291',
         flexDirection:'column',

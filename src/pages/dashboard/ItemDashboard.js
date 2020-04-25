@@ -7,7 +7,9 @@ import BottomSheet  from './bottomSheet'
 
 
 const ItemDashboard = (props) => {
-    const bottomSheetRef = useRef(); // eu crio a refenrencia no item mas passo ela como prop para o bottom sheet
+    const bottomSheetRef = useRef(); // eu crio a refenrencia no item mas passo ela como prop para o bottom sheet    
+    const ITEM = props.item
+    //console.log('[itemDash]->', ITEM);
 
     if(props.isLoading){
         if(props.size === 'small'){
@@ -55,11 +57,11 @@ const ItemDashboard = (props) => {
             return(//item small not loading
                 <View style={styleSmall.item}>
                 
-                    <Image source={props.item.image} style={styleSmall.image} />
+                    <Image source={{uri: ITEM.img_url}} style={styleSmall.image} />
                 
                     <View style={styleSmall.textBox}>
-                        <Text numberOfLines={2} style={styleSmall.title}>{props.item.title}</Text>
-                        <Text ellipsizeMode='tail' numberOfLines={4} style={styleSmall.text}>{props.item.text}</Text>
+                        <Text numberOfLines={2} style={styleSmall.title}>{ITEM.title}</Text>
+                        <Text ellipsizeMode='tail' numberOfLines={4} style={styleSmall.text}>{ITEM.description}</Text>
                     </View>
                     
                 </View>
@@ -76,19 +78,19 @@ const ItemDashboard = (props) => {
                         >
                             <Entypo name="dots-three-vertical" style={styleLarge.dots}/>
                         </TouchableOpacity>
-                        <Image source={props.item.image} style={styleLarge.image} >                
+                        <Image source={{uri: ITEM.img_url}} style={styleLarge.image} >                
                         </Image>
                     
                         <View style={styleLarge.textBox}>
                             <View style={styleLarge.titleBox}>
-                                <Text numberOfLines={1} style={styleSmall.title}>{props.item.title}</Text>
+                                <Text numberOfLines={1} style={styleSmall.title}>{ITEM.title}</Text>
                             </View>
                             <View style={styleLarge.subTitleBox}>
-                                <Text ellipsizeMode='tail' numberOfLines={2} style={styleLarge.text}>{props.item.text}</Text>  
+                                <Text ellipsizeMode='tail' numberOfLines={2} style={styleLarge.text}>{ITEM.description}</Text>  
                             </View>
                             
                         </View>
-                        <BottomSheet refere={bottomSheetRef} item={props.item}/>
+                        <BottomSheet refere={bottomSheetRef} item={ITEM}/>
                     </View>
                 );
         }

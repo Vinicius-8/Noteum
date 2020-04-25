@@ -31,10 +31,11 @@ const Index = (props) => {
     const [isModalNewItemVisible, setIsModalNewItemVisible] = useState(false);
     const [drawerLists, setDrawerLists] = useState(props.route.params.user.lists)
     const [currentList, setCurrentList] = useState(drawerLists[0]);
-    
-
+    const [isLoadingItem, setIsLoadingItem] = useState(true)
     const USER = props.route.params.user
     const TOKEN = props.route.params.token
+    //console.log('t: ', TOKEN);
+    
     //console.log('-[dashboard]-> datauser: ',props.route.params);
     useEffect(() => { // leave the app
       const backAction = () => {
@@ -57,8 +58,33 @@ const Index = (props) => {
       return () => backHandler.remove();
     }, []);
 
+    function loadItemData(id_list){
+      api.get('items',           
+      {
+        headers:{
+          "Owner-id": USER.id,
+          "Owner-list-id":  id_list,
+          "Authorization": "Bearer "+ TOKEN
+        }
+      })
+      .then(res=> {
+        //console.log('[loaditemdata]>>resp: ',res.data)
+        setCurrentList(res.data)
+        
+      })
+      .catch(err => console.log('erro: ', err))
+      
+    }
+    
+    useEffect(
+      () =>{        
+        loadItemData(1)
+      }
+      ,[]);
 
-    function selectDrawerItem({item}){
+    
+    function selectDrawerItem({item}){      
+      loadItemData(item.id)
       setCurrentList(item)
       drawerRef.current.closeDrawer();
     }
@@ -142,6 +168,7 @@ const Index = (props) => {
       const [loading, setLoading] = useState(isModalNewItemVisible)
       const [isLoaded, setIsLoaded] = useState(true)
       const [openGraphData, setOpenGraphData] = useState({})
+     
       function validURL(str) {
         var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
           '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
@@ -257,7 +284,7 @@ const Index = (props) => {
       const ItemContainer = () =>{
         const [isListVisible, setIsListVisible] = useState(false);
 
-        async function createItem(lista){
+        async function createItem(lista){        
           if(lista != null && openGraphData!=null){
             api.post('items', {
               title: openGraphData.title,
@@ -273,14 +300,16 @@ const Index = (props) => {
                 "Authorization": "Bearer "+TOKEN
               }
             })
-            .then(response =>  {console.log('[createItem] response: ', response)
-              Alert.alert("Salvo", "Seu item foi salvo na lista ", lista.title)
+            .then(response =>  {
+              //console.log('[createItem] response: ', response)
+              Alert.alert("Salvo", "Seu item foi salvo na lista ", lista.title)            
             })
             .catch(err => console.log('[createItem] error : ',err))
           }else{
             Alert.alert("Erro", "O item não pode ser criado")            
-          }          
+          }                  
           setIsModalNewItemVisible(false)
+          
         }
 
 
@@ -294,7 +323,11 @@ const Index = (props) => {
             renderItem={(
               ({item}) => 
                 <TouchableOpacity style={style.MNIListContainer} onPress={
-                  ()=> createItem(item)                   
+                  ()=> {
+                    createItem(item); 
+                    setCurrentList(item);  
+                    loadItemData(item.id);                
+                   }                   
                 }>
                   <Text numberOfLines={2}  style={style.MNIListText}>{item.title}</Text>
                 </TouchableOpacity>
@@ -422,7 +455,7 @@ const Index = (props) => {
 
           </View>
         </View>
-        <DashBoard mode="large" data={currentList}/>
+         <DashBoard mode="large" data={currentList}/> 
        </DrawerLayoutAndroid>
     );
 
