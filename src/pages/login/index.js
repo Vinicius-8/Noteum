@@ -30,6 +30,8 @@ const Login = () => {
     async function loginWithAllData(){
         setLoading(true)
         var googleData = await signInWithGoogle() 
+        console.log('[loginWithAllData, googleData] ->', googleData.token);
+        console.log('\n');
         
         if(googleData.cancelled === true){
           return Alert.alert("Falha", 'Não foi possível realizar o login')
@@ -74,6 +76,8 @@ const Login = () => {
         "email": userData.email,
         "token": userData.token
       }
+      console.log('[simpleLogin, data] ->', userData.token);
+      console.log('\n');
       
       await api.post('login',{ "email": data.email}, {
         headers:{
@@ -88,7 +92,8 @@ const Login = () => {
       })
       .catch(err => {
         //fail
-        console.log('Login: ', err.response.status)
+        //console.log('Login: ', err.response.status)
+        console.log('Login: ', err.response)
         setLoading(false)
       });
 

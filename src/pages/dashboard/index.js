@@ -31,7 +31,6 @@ const Index = (props) => {
     const [isModalNewItemVisible, setIsModalNewItemVisible] = useState(false);
     const [drawerLists, setDrawerLists] = useState(props.route.params.user.lists)
     const [currentList, setCurrentList] = useState(drawerLists[0]);
-    const [isLoadingItem, setIsLoadingItem] = useState(true)
     const USER = props.route.params.user
     const TOKEN = props.route.params.token
     //console.log('t: ', TOKEN);
@@ -58,8 +57,8 @@ const Index = (props) => {
       return () => backHandler.remove();
     }, []);
 
-    function loadItemData(id_list){
-      api.get('items',           
+    async function loadItemData(id_list){
+      await api.get('items',           
       {
         headers:{
           "Owner-id": USER.id,
@@ -69,8 +68,7 @@ const Index = (props) => {
       })
       .then(res=> {
         //console.log('[loaditemdata]>>resp: ',res.data)
-        setCurrentList(res.data)
-        
+        setCurrentList(res.data)        
       })
       .catch(err => console.log('erro: ', err))
       
@@ -323,10 +321,10 @@ const Index = (props) => {
             renderItem={(
               ({item}) => 
                 <TouchableOpacity style={style.MNIListContainer} onPress={
-                  ()=> {
+                   ()=> {
                     createItem(item); 
-                    setCurrentList(item);  
-                    loadItemData(item.id);                
+                    loadItemData(item.id);
+                    setCurrentList(item);                  
                    }                   
                 }>
                   <Text numberOfLines={2}  style={style.MNIListText}>{item.title}</Text>
