@@ -8,31 +8,22 @@ import ItemDash from './ItemDashboard'
 
 
 const Dashboard = (props) => {  
-    const [loading, setLoading] = useState(false);
-    //console.log('[dashboard]-> ', props);
+    console.log('[dashboard]-> ', props.loading);
     const data = props.data.items
     const exibitionMode = props.mode
 
     function touched(item){
         console.log('tocou no item: ', item.title);
-    }
-    
-    
+    }        
 
-    if(loading){ // loading screen
+    if(props.loading){ // loading screen
         return(//-------- loading
-            <View style={style.container}>
-                <View style={style.header}>
-                    <TouchableOpacity style={style.hambBox}>
-                        <SimpleLineIcons name="menu" size={28} color="white"/>
-                    </TouchableOpacity>
-                    <View style={[style.titleBox, {marginLeft: -40,}]}>
-                      
-                    </View>
-                </View>
+            <View style={style.container}>        
                 <View style={style.body}>
-                    <ItemDash size={exibitionMode} isLoading={loading}/>
-                    <ItemDash size={exibitionMode} isLoading={loading}/>
+                    <ItemDash size={exibitionMode} isLoading={props.loading}/>
+                    <ItemDash size={exibitionMode} isLoading={props.loading}/>
+                    <ItemDash size={exibitionMode} isLoading={props.loading}/>
+                    <ItemDash size={exibitionMode} isLoading={props.loading}/>
                 </View>
             </View>
         );//-------- loading
@@ -52,7 +43,7 @@ const Dashboard = (props) => {
                             }}>
                                 <ItemDash 
                                     size={props.mode} 
-                                    isLoading={loading} 
+                                    isLoading={props.loading} 
                                     item={item} 
                                     onPress={touched} 
                                     //bottomSheet={bottomSheetRef}

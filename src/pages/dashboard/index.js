@@ -31,6 +31,7 @@ const Index = (props) => {
     const [isModalNewItemVisible, setIsModalNewItemVisible] = useState(false);
     const [drawerLists, setDrawerLists] = useState(props.route.params.user.lists)
     const [currentList, setCurrentList] = useState(drawerLists[0]);
+    const [isLoading, setIsLoading] = useState(true);
     const USER = props.route.params.user
     const TOKEN = props.route.params.token
     //console.log('t: ', TOKEN);
@@ -57,7 +58,8 @@ const Index = (props) => {
       return () => backHandler.remove();
     }, []);
 
-    async function loadItemData(id_list){
+    async function loadItemsDataFromList(id_list){
+      setIsLoading(true)
       await api.get('items',           
       {
         headers:{
@@ -68,21 +70,24 @@ const Index = (props) => {
       })
       .then(res=> {
         //console.log('[loaditemdata]>>resp: ',res.data)
-        setCurrentList(res.data)        
+        setCurrentList(res.data)
+        setTimeout(()=>{
+          setIsLoading(false)
+        }, 2000);                
       })
       .catch(err => console.log('erro: ', err))
-      
+
     }
     
     useEffect(
       () =>{        
-        loadItemData(1)
+        loadItemsDataFromList(1)
       }
       ,[]);
 
     
     function selectDrawerItem({item}){      
-      loadItemData(item.id)
+      loadItemsDataFromList(item.id)
       setCurrentList(item)
       drawerRef.current.closeDrawer();
     }
@@ -276,8 +281,6 @@ const Index = (props) => {
           </TouchableWithoutFeedback>
         );
       }
-
-      
     
       const ItemContainer = () =>{
         const [isListVisible, setIsListVisible] = useState(false);
@@ -323,7 +326,7 @@ const Index = (props) => {
                 <TouchableOpacity style={style.MNIListContainer} onPress={
                    ()=> {
                     createItem(item); 
-                    loadItemData(item.id);
+                    loadItemsDataFromList(item.id);
                     setCurrentList(item);                  
                    }                   
                 }>
@@ -453,10 +456,13 @@ const Index = (props) => {
 
           </View>
         </View>
-         <DashBoard mode="large" data={currentList}/> 
+        <DashBoard mode="large" loading={isLoading} data={currentList}/> 
+
        </DrawerLayoutAndroid>
     );
 
 }
 
 export default Index;
+/**{!isLoading ? <DashBoard mode="large" data={currentList}/> 
+         : <DashBoard mode="large" data={currentList}/>} */
