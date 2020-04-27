@@ -50,9 +50,9 @@ const Login = () => {
             .then(response => {
                 if(response.status == 201){
                   //login sucess
-                  //console.log('[loginAllData]-> dados user: ', response.data); 
-                  //console.log('[loginAllData]-> 201 success');                  
-                  goDashboard(response.data)                                   
+                  console.log('[loginAllData]-> dados user: ', response.data); 
+                  console.log('[loginAllData]-> 201 success');                  
+                  goDashboard(response.data) //acredito que o token nao esta indo junto 
                 }else {
                   //não falhou mas foi diferente de 200
                   console.log('[loginAllData][>200] a response foi:  ', response.status);    
@@ -60,11 +60,14 @@ const Login = () => {
                 
             }).catch(err => {
               //fail
-              console.log('Alldata: ', err.response.status)
               
+              if(err){
+                console.log('[loginWithAllData, error]: ', err.response.status)
+              }else{
+                console.log('[loginWithAllData, error]: ', err)
+              }              
                 // login falhou
                 setLoading(false)
-            
             });
                   
       }
@@ -86,14 +89,17 @@ const Login = () => {
       })
       .then(res => {
         //success
-        //console.log('200>>>>', res.data)
+        console.log('[simpleLogin]200>>>>', res.data)
         //res.data.push({'token': data.token})
         goDashboard(res.data, data.token)
       })
       .catch(err => {
         //fail
-        //console.log('Login: ', err.response.status)
-        console.log('Login: ', err.response)
+        if(err){
+          console.log('[loginWithAllData, error]: ', err.response.status)
+        }else{
+          console.log('[loginWithAllData, error]: ', err)
+        }
         setLoading(false)
       });
 

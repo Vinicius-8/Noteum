@@ -1,17 +1,15 @@
 import React, {useState, useRef} from 'react';
-import { View, TouchableOpacity, FlatList, Text } from 'react-native';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { View, TouchableOpacity, FlatList, } from 'react-native';
 
 import style from './dashboardStyle'
-import data from '../../dataTests/data'
 import ItemDash from './ItemDashboard'
 
 
 const Dashboard = (props) => {  
-    console.log('[dashboard]-> ', props.loading);
+    //console.log('[dashboard]-> ', props);
     const data = props.data.items
     const exibitionMode = props.mode
-
+    
     function touched(item){
         console.log('tocou no item: ', item.title);
     }        
@@ -46,7 +44,7 @@ const Dashboard = (props) => {
                                     isLoading={props.loading} 
                                     item={item} 
                                     onPress={touched} 
-                                    //bottomSheet={bottomSheetRef}
+                                    userData={props.userData}
                                     />
                             </TouchableOpacity>
                         )}

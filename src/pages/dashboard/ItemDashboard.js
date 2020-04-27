@@ -9,7 +9,6 @@ import BottomSheet  from './bottomSheet'
 const ItemDashboard = (props) => {
     const bottomSheetRef = useRef(); // eu crio a refenrencia no item mas passo ela como prop para o bottom sheet    
     const ITEM = props.item
-    //console.log('[itemDash]->', ITEM);
 
     if(props.isLoading){
         if(props.size === 'small'){
@@ -56,14 +55,21 @@ const ItemDashboard = (props) => {
         if(props.size === 'small'){
             return(//item small not loading
                 <View style={styleSmall.item}>
-                
+                    <TouchableOpacity style={styleSmall.dotsBox}
+                        onPress={()=>{    
+                            bottomSheetRef.current.open();                                                
+                            }
+                        }
+                    >
+                        <Entypo name="dots-three-vertical" style={styleSmall.dots}/>
+                    </TouchableOpacity>
                     <Image source={{uri: ITEM.img_url}} style={styleSmall.image} />
                 
                     <View style={styleSmall.textBox}>
                         <Text numberOfLines={2} style={styleSmall.title}>{ITEM.title}</Text>
                         <Text ellipsizeMode='tail' numberOfLines={4} style={styleSmall.text}>{ITEM.description}</Text>
                     </View>
-                    
+                    <BottomSheet refere={bottomSheetRef} userData={props.userData} item={ITEM}/>
                 </View>
             );
         }else if(props.size === 'large'){
@@ -71,7 +77,6 @@ const ItemDashboard = (props) => {
                     <View style={styleLarge.item} >
                         <TouchableOpacity style={styleLarge.dotsBox}
                             onPress={()=>{    
-                                //console.log(bottomSheetRef);                      
                                 bottomSheetRef.current.open();                                                
                                 }
                             }
@@ -90,7 +95,7 @@ const ItemDashboard = (props) => {
                             </View>
                             
                         </View>
-                        <BottomSheet refere={bottomSheetRef} item={ITEM}/>
+                        <BottomSheet refere={bottomSheetRef} userData={props.userData} item={ITEM}/>
                     </View>
                 );
         }
@@ -190,17 +195,35 @@ const styleSmall = StyleSheet.create({
         overflow:'hidden',
     },
     title:{
+        width: 176,
         color:'snow',
         fontWeight:'bold',
         fontSize:20,
-        
+        //backgroundColor:'red'
     },
     text:{
         marginTop:5,
         color:'white',
         
         //backgroundColor:'gray',
-    }
+    },
+    dotsBox:{
+        position:'absolute',
+        right: 0,
+        top: 0,
+        zIndex: 1,
+        height: 35,
+        width: 25,
+        justifyContent:'center',
+        alignItems:'center',
+        //backgroundColor: 'red',
+    },
+    dots:{
+        color:'snow',
+        fontSize: 19,
+        //backgroundColor: "rgba(0,0,0,.5)",
+        //borderRadius: 80
+    },
 });
 
 const styleLargeLoading = StyleSheet.create({

@@ -26,6 +26,10 @@ import style from './indexStyle'
 
 
 const Index = (props) => {
+
+    ///console.log('prps==> ', props);
+        
+    
     const drawerRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalNewItemVisible, setIsModalNewItemVisible] = useState(false);
@@ -35,7 +39,12 @@ const Index = (props) => {
     const USER = props.route.params.user
     const TOKEN = props.route.params.token
     //console.log('t: ', TOKEN);
-    
+
+    if(props.route.params.list_id !== undefined){
+      console.log('ind para a ista: ', props.route.params.list_id );      
+      loadItemsDataFromList(props.route.params.list_id)
+      props.route.params.list_id = undefined
+    }
     //console.log('-[dashboard]-> datauser: ',props.route.params);
     useEffect(() => { // leave the app
       const backAction = () => {
@@ -73,7 +82,7 @@ const Index = (props) => {
         setCurrentList(res.data)
         setTimeout(()=>{
           setIsLoading(false)
-        }, 2000);                
+        }, 1000);                
       })
       .catch(err => console.log('erro: ', err))
 
@@ -456,7 +465,7 @@ const Index = (props) => {
 
           </View>
         </View>
-        <DashBoard mode="large" loading={isLoading} data={currentList}/> 
+        <DashBoard mode="large" loading={isLoading} data={currentList} userData={{user: USER, token: TOKEN}}/> 
 
        </DrawerLayoutAndroid>
     );
