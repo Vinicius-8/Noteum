@@ -1,5 +1,5 @@
-import React, {useState, useRef} from 'react';
-import { View, TouchableOpacity, FlatList, } from 'react-native';
+import React from 'react';
+import { View, TouchableOpacity, FlatList, Linking } from 'react-native';
 
 import style from './dashboardStyle'
 import ItemDash from './ItemDashboard'
@@ -10,8 +10,10 @@ const Dashboard = (props) => {
     const data = props.data.items
     const exibitionMode = props.mode
     
-    function touched(item){
+    function openLinkInWebBrowser(item){
         console.log('tocou no item: ', item.title);
+        Linking.openURL(item.url)
+        .catch((err) => console.error('An error occurred', err));
     }        
 
     if(props.loading){ // loading screen
@@ -37,13 +39,13 @@ const Dashboard = (props) => {
                         renderItem={(
                             ({item}) => 
                             <TouchableOpacity onPress={()=>{
-                                touched(item)
+                                openLinkInWebBrowser(item)
                             }}>
                                 <ItemDash 
                                     size={props.mode} 
                                     isLoading={props.loading} 
                                     item={item} 
-                                    onPress={touched} 
+                                    onPress={openLinkInWebBrowser} 
                                     userData={props.userData}
                                     />
                             </TouchableOpacity>

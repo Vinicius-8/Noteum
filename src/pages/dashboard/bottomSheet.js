@@ -47,7 +47,7 @@ const BottomSheet = (props) => {
           }
         })
         .then(resp => {
-          console.log('[deleteItem]->', resp) 
+          //console.log('[deleteItem]->', resp) 
           setTimeout(()=>{
             navigation.navigate('Dashboard', {list_id:resp.data.list_id});  
           }, 200);         
