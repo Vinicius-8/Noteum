@@ -36,6 +36,27 @@ const BottomSheet = (props) => {
       }
     }
 
+    function deleteItem(){
+      if(ITEM !== null){
+        api.delete('items', // a falta desse corpo é fundamental para o backend
+        {
+          headers:{
+           "Owner-id": props.userData.user.id,
+            "Item-id": ITEM.id,
+            "Authorization": "Bearer "+ props.userData.token
+          }
+        })
+        .then(resp => {
+          console.log('[deleteItem]->', resp) 
+          setTimeout(()=>{
+            navigation.navigate('Dashboard', {list_id:resp.data.list_id});  
+          }, 200);         
+          }
+        )
+        .catch(err => console.log(err.response.status))
+      }
+    }
+
     const ListToSaveMenu =()=> (<View style={style.MNIBox} >
       <Text style={[style.BSCTitle, {backgroundColor:'#596180'}]}>Mover para: </Text>
       <FlatList
@@ -74,7 +95,11 @@ const BottomSheet = (props) => {
                 </TouchableOpacity>
                 
                 <TouchableOpacity style={style.BSCButton}
-                    onPress={ ()=> console.log('Apagando: ', props.item.title)}
+                    onPress={ ()=> {
+                      console.log('Apagando: ', props.item.title)
+                      deleteItem()
+                      props.refere.current.close();
+                    }}
                 >
                     <MaterialCommunityIcons name="trash-can-outline" style={style.BSCIcon} />
                     <Text style={style.BSCText}>Apagar</Text>

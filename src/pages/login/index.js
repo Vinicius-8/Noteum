@@ -52,7 +52,7 @@ const Login = () => {
                   //login sucess
                   console.log('[loginAllData]-> dados user: ', response.data); 
                   console.log('[loginAllData]-> 201 success');                  
-                  goDashboard(response.data) //acredito que o token nao esta indo junto 
+                  goDashboard(response.data, googleData.token) //acredito que o token nao esta indo junto 
                 }else {
                   //não falhou mas foi diferente de 200
                   console.log('[loginAllData][>200] a response foi:  ', response.status);    
