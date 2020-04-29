@@ -50,8 +50,8 @@ const Login = () => {
             .then(response => {
                 if(response.status == 201){
                   //login sucess
-                  console.log('[loginAllData]-> dados user: ', response.data); 
-                  console.log('[loginAllData]-> 201 success');                  
+                  //console.log('[loginAllData]-> dados user: ', response.data); 
+                  //console.log('[loginAllData]-> 201 success');                  
                   goDashboard(response.data, googleData.token) //acredito que o token nao esta indo junto 
                 }else {
                   //não falhou mas foi diferente de 200
@@ -89,7 +89,7 @@ const Login = () => {
       })
       .then(res => {
         //success
-        console.log('[simpleLogin]200>>>>', res.data)
+        //console.log('[simpleLogin]200>>>>', res.data)
         //res.data.push({'token': data.token})
         goDashboard(res.data, data.token)
       })

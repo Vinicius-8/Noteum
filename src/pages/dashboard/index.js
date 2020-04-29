@@ -27,18 +27,19 @@ import style from './indexStyle'
 
 const Index = (props) => {
 
-    ///console.log('prps==> ', props);
-        
-    
+    //console.log('prps==> ', props);
     const drawerRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalNewItemVisible, setIsModalNewItemVisible] = useState(false);
+    const [isModalConfigExhibitionVisible, setIsModalConfigExhibitionVisible] = useState(false);
     const [drawerLists, setDrawerLists] = useState(props.route.params.user.lists)
     const [currentList, setCurrentList] = useState(drawerLists[0]);
     const [isLoading, setIsLoading] = useState(true);
+
     const USER = props.route.params.user
     const TOKEN = props.route.params.token
-    //console.log('t: ', TOKEN);
+    const [exhibitionMode, setExhibitionMode] = useState(USER.exhibition_mode);
+    
 
     if(props.route.params.list_id !== undefined){
       console.log('ind para a ista: ', props.route.params.list_id );      
@@ -104,6 +105,11 @@ const Index = (props) => {
     function createNewDrawerList(){
       drawerRef.current.closeDrawer();
       setIsModalVisible(true)
+    }
+
+    function configExhibitionMode(){
+      drawerRef.current.closeDrawer();
+      setIsModalConfigExhibitionVisible(true)
     }
 
     const ModalNewListScreen = () =>{
@@ -412,11 +418,72 @@ const Index = (props) => {
         );
     }
 
+    const ModalConfigExhibition = () =>{
+      
+      function saveExhibitionMode(mode){
+        console.log('mode: ', mode , 'usermode: ', exhibitionMode);
+        
+        if(mode!=null && mode != exhibitionMode){
+          api.put('exhibition', {},{
+            headers:{
+              "Owner-id": USER.id,
+              "Exhibition-mode":  mode,
+              "Authorization": "Bearer "+ TOKEN
+            }
+          })
+          .then(resp=> {
+            //console.log('[saveExhibitionMode]->200: ', resp)
+            console.log('definindo...');
+            
+            setExhibitionMode(mode)
+            
+          })
+          .catch(err=>console.log('[saveExhibitionMode]->err: ',err))
+        }
+      }
+      
+
+      return(
+        <Modal animationType='fade' transparent={true} visible={isModalConfigExhibitionVisible}>
+          <TouchableWithoutFeedback
+            onPress={ ()=>{ setIsModalConfigExhibitionVisible(false) } }
+          >
+          
+            <View style={style.modalContainer} >
+              <TouchableWithoutFeedback>
+                  <View style={style.MCBox} >
+                    <Text style={ style.modalTitle }>Exibição:</Text>
+                      <TouchableOpacity style={[style.MCButton, {borderBottomColor: '#575E78',borderBottomWidth: .8}]}
+                        onPress={()=> {
+                          saveExhibitionMode('small')
+                          setIsModalConfigExhibitionVisible(false)
+                        }}
+                      >
+                      <Text style={style.MCText}>Small</Text>  
+                      </TouchableOpacity>                                                                
+
+                      <TouchableOpacity  style={style.MCButton} 
+                        onPress={()=> {
+                          saveExhibitionMode('large')
+                          setIsModalConfigExhibitionVisible(false)
+                        }}
+                      >
+                      <Text style={style.MCText}>Large</Text>  
+                      </TouchableOpacity>                                                                
+                  </View>
+                </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      );
+    } 
+
+
     const navigationView = ( // gera os itens no menu drawer
       <View style={style.drawerContainer}>
         <ModalNewListScreen />
         <ModalNewItem/>
-
+        <ModalConfigExhibition/>
         <FlatList
           data={drawerLists}
           showsVerticalScrollIndicator={false}
@@ -432,10 +499,20 @@ const Index = (props) => {
             )
           }
         />
-        <TouchableOpacity style={[style.drawerItem, {backgroundColor:'#262C38'}]} 
-        onPress={ createNewDrawerList }>
-            <Text style={style.drawerItemText}>+ Nova lista</Text>
-        </TouchableOpacity>
+        <View style={style.bottomButtonsDrawer}>
+                    
+        
+          <TouchableOpacity style={[style.drawerItem, {backgroundColor:'#262C38'}, style.drawerItemSpecial]} 
+          onPress={ createNewDrawerList }>
+              <Text style={style.drawerItemText}>+ Nova lista</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[style.drawerConfigButton,{backgroundColor:'#262C38'} ]}
+            onPress={configExhibitionMode}
+          >
+            <AntDesign name="setting" size={25} color="white"/>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   
@@ -465,7 +542,7 @@ const Index = (props) => {
 
           </View>
         </View>
-        <DashBoard mode="large" loading={isLoading} data={currentList} userData={{user: USER, token: TOKEN}}/> 
+        <DashBoard mode={exhibitionMode} loading={isLoading} data={currentList} userData={{user: USER, token: TOKEN}}/> 
 
        </DrawerLayoutAndroid>
     );
@@ -473,5 +550,3 @@ const Index = (props) => {
 }
 
 export default Index;
-/**{!isLoading ? <DashBoard mode="large" data={currentList}/> 
-         : <DashBoard mode="large" data={currentList}/>} */

@@ -68,13 +68,28 @@ const indexStyle = StyleSheet.create({
         paddingTop: Constants.statusBarHeight,
         backgroundColor:'#43485C'
     },
+    bottomButtonsDrawer:{
+        flexDirection: 'row',        
+    },
     drawerItem:{
-        height:50,
+        height:50,        
         borderBottomWidth: .2,
         borderBottomColor:'#262C38',
         alignItems:'flex-start',
         justifyContent:'center',
         paddingLeft: 20
+    },
+    drawerItemSpecial:{
+        width: 200
+    },
+    drawerConfigButton:{
+        height:50,
+        borderBottomWidth: .1,
+        borderBottomColor:'#262C38',
+        alignItems:'center',
+        justifyContent:'center',
+        marginLeft: .8,        
+        flex: 1,
     },
     drawerItemSelected:{
         height:50,
@@ -145,7 +160,24 @@ const indexStyle = StyleSheet.create({
         marginLeft: 20,
         marginTop: 10,
      },
+     // Modal config    Modal config    Modal config
+     MCBox:{
+        width: 300,
+        height: 150,
+        borderRadius: 5,
+        backgroundColor:'#6A7291',
+        justifyContent:'space-around'
+     },
 
+     MCButton:{
+        justifyContent: 'center',
+        alignItems:'center',
+        height: 50,
+     },
+     MCText:{
+        fontSize: 20,
+        color:'white'
+     },
      // header  header  header  header 
      headerContainer:{
         paddingTop: Constants.statusBarHeight, 
