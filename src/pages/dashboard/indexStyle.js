@@ -71,13 +71,18 @@ const indexStyle = StyleSheet.create({
     bottomButtonsDrawer:{
         flexDirection: 'row',        
     },
+    drawerItemBox:{
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     drawerItem:{
         height:50,        
+        width:200,
         borderBottomWidth: .2,
         borderBottomColor:'#262C38',
         alignItems:'flex-start',
         justifyContent:'center',
-        paddingLeft: 20
+        paddingLeft: 20,       
     },
     drawerItemSpecial:{
         width: 200
@@ -103,6 +108,13 @@ const indexStyle = StyleSheet.create({
     drawerItemText:{
       color:'snow',
       fontSize: 17,
+    },
+    drawerDeleteButton:{
+        justifyContent:'center',
+        alignItems:'center',        
+        flex: 1,
+        borderBottomWidth: .2,
+        borderBottomColor:'#262C38',
     },
 
     // modal    modal   modal   modal   

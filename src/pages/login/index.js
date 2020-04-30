@@ -75,7 +75,6 @@ const Login = (props) => {
                 // login falhou
                 setLoading(false)
             });
-                  
       }
     }
 

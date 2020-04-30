@@ -42,7 +42,6 @@ const Index = (props) => {
     
 
     if(props.route.params.list_id !== undefined){
-      console.log('ind para a ista: ', props.route.params.list_id );      
       loadItemsDataFromList(props.route.params.list_id)
       props.route.params.list_id = undefined
     }
@@ -105,6 +104,35 @@ const Index = (props) => {
       loadItemsDataFromList(item.id)
       setCurrentList(item)
       drawerRef.current.closeDrawer();
+    }
+
+    function deleteDrawerItem(item){      
+      var lista = item.item
+      if(lista != null){
+        api.delete('lists', // a falta desse corpo é fundamental para o backend
+        {
+          headers:{
+           "Owner-id": USER.id,
+            "List-id": lista.id,
+            "Authorization": "Bearer "+ TOKEN
+          }
+        })
+        .then(resp => {
+          console.log('[deleteItem]->', resp.data.lists) 
+          drawerRef.current.closeDrawer();
+          setTimeout(()=>{
+            setDrawerLists(resp.data.lists)
+            navigation.navigate('Dashboard', {list_id:1});              
+          }, 200);         
+          }
+        )
+        .catch(err => {
+          console.log(err.response.status)
+          if(err.response.status == 401){
+            navigation.navigate('Login', {tokenExpired:true})
+          }
+        })
+      }
     }
 
     function createNewDrawerList(){
@@ -327,8 +355,10 @@ const Index = (props) => {
               }
             })
             .then(response =>  {
-              //console.log('[createItem] response: ', response)
-              Alert.alert("Salvo", "Seu item foi salvo na lista ", lista.title)            
+              //console.log('[createItem] response: ', response.data.owner_list_id)
+              setTimeout(()=>{
+                navigation.navigate('Dashboard', {list_id:response.data.owner_list_id});  
+              }, 200);  
             })
             .catch(err => {
               console.log('[createItem] error : ',err)
@@ -343,7 +373,6 @@ const Index = (props) => {
           
         }
 
-
         const ListToSaveMenu =()=> (<View style={style.MNIBox} >
           <Text style={[style.MNITitle, {backgroundColor:'#596180'}]}>Salvar em: </Text>
           <FlatList
@@ -355,9 +384,7 @@ const Index = (props) => {
               ({item}) => 
                 <TouchableOpacity style={style.MNIListContainer} onPress={
                    ()=> {
-                    createItem(item); 
-                    loadItemsDataFromList(item.id);
-                    setCurrentList(item);                  
+                    createItem(item);                
                    }                   
                 }>
                   <Text numberOfLines={2}  style={style.MNIListText}>{item.title}</Text>
@@ -511,11 +538,42 @@ const Index = (props) => {
           
           renderItem={(
             ({item}) => 
+            <View style={style.drawerItemBox}>
               <TouchableOpacity style={currentList === item ? style.drawerItemSelected :style.drawerItem } onPress={
                 ()=> selectDrawerItem({item})            
               }>
                 <Text numberOfLines={2}  style={style.drawerItemText}>{item.title}</Text>
               </TouchableOpacity>
+              {item.id != 1 ?
+              <TouchableOpacity style={style.drawerDeleteButton}
+                onPress={
+                  ()=>{
+                    Alert.alert(
+                      'Atenção',
+                      "Deseja realmente deletar a lista \'"+item.title+"\'?",
+                      [
+                        
+                        {
+                          text: 'Cancelar',
+                          style: 'cancel',
+                        },
+                        {text: 'Deletar', onPress: () =>{deleteDrawerItem({item})}},
+                      ],
+                      {cancelable: true},)
+
+                                        
+                  }
+
+                }
+              >
+                <AntDesign name="delete" size={20} color="white"/>
+              </TouchableOpacity>: <TouchableOpacity
+               style={{width: 70,borderBottomWidth: .2,borderBottomColor:'#262C38', }}
+               onPress={
+                ()=> selectDrawerItem({item})            
+              }
+               />}
+              </View>
             )
           }
         />
