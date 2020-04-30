@@ -10,12 +10,18 @@ import Secure from '../../services/store'
 
 import style from './loginStyle'
 import logoImg from '../../../assets/icon.png'
+import { AntDesign } from '@expo/vector-icons';
 
-
-const Login = () => {
+const Login = (props) => {
     const navigation = useNavigation();    
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
+    
+    if (props.route.params != undefined){
+      if(props.route.params.tokenExpired){
+        simpleLogin()
+      }
+    }
     
     // buscar dados locais 
     // tentar logar
@@ -139,12 +145,12 @@ const Login = () => {
         navigation.navigate('Dashboard', datas);
     }
     
-    useEffect(()=>{
+    useEffect(()=>{            
       Secure('credentials', null).then(
         json => setUserData(json)
       )
     }, []);
-    useEffect(()=>{
+    useEffect(()=>{          
       if(userData!=null){
         //console.log('partindo para o login...', userData); 
         simpleLogin()       
@@ -165,7 +171,8 @@ const Login = () => {
                     }}>
                     
                       <View style={style.loginBox}>
-                          <Text>Logar com o Google+</Text>
+                          <AntDesign name="google" size={29} color="black"/>
+                          <Text>Logar com o Google</Text>
                       </View> 
                 </TouchableOpacity>
               </View>

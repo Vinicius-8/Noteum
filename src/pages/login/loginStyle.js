@@ -30,8 +30,9 @@ export default StyleSheet.create({
         alignSelf:'flex-start'
     },
     loginBox: {
+        flexDirection: 'row',
         backgroundColor: 'snow',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         width: 200,
         height: 50,

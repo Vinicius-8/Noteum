@@ -23,7 +23,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import DashBoard from './dashboard'
 import style from './indexStyle'
-
+import { useNavigation } from '@react-navigation/native';
 
 const Index = (props) => {
 
@@ -35,7 +35,7 @@ const Index = (props) => {
     const [drawerLists, setDrawerLists] = useState(props.route.params.user.lists)
     const [currentList, setCurrentList] = useState(drawerLists[0]);
     const [isLoading, setIsLoading] = useState(true);
-
+    const navigation = useNavigation()
     const USER = props.route.params.user
     const TOKEN = props.route.params.token
     const [exhibitionMode, setExhibitionMode] = useState(USER.exhibition_mode);
@@ -85,7 +85,12 @@ const Index = (props) => {
           setIsLoading(false)
         }, 1000);                
       })
-      .catch(err => console.log('erro: ', err))
+      .catch(err => {
+        console.log('erro: ', err)
+        if(err.response.status == 401){
+          navigation.navigate('Login', {tokenExpired:true})
+        }
+      })
 
     }
     
@@ -134,7 +139,9 @@ const Index = (props) => {
           });
         } catch (error) {
             console.log('-[saveNewList]-> ', error);
-            
+            if(error.response.status == 401){
+              navigation.navigate('Login', {tokenExpired:true})
+            }            
         }
         setIsModalVisible(false);
         drawerLists.push({id:drawerLists.length+1, title: newDrawerListText});
@@ -217,10 +224,10 @@ const Index = (props) => {
             headers:{
               "Authorization": "Bearer "+ TOKEN
             }
-          })
+          }, )
           .then(response=> {
             //console.log(response.data); 
-            d = response.data
+            var d = response.data
             d.s = 'Salvar'
             d.c = 'Cancelar'
 
@@ -233,6 +240,9 @@ const Index = (props) => {
           .catch(err=>{
             console.log(err.response.status);
             setIsLoaded(false)
+            if(err.response.status == 401){
+              navigation.navigate('Login', {tokenExpired:true})
+            }
           })
         }else{
           setLoading(false)
@@ -320,7 +330,12 @@ const Index = (props) => {
               //console.log('[createItem] response: ', response)
               Alert.alert("Salvo", "Seu item foi salvo na lista ", lista.title)            
             })
-            .catch(err => console.log('[createItem] error : ',err))
+            .catch(err => {
+              console.log('[createItem] error : ',err)
+              if(err.response.status == 401){
+                navigation.navigate('Login', {tokenExpired:true})
+              }
+            })
           }else{
             Alert.alert("Erro", "O item não pode ser criado")            
           }                  
@@ -438,7 +453,12 @@ const Index = (props) => {
             setExhibitionMode(mode)
             
           })
-          .catch(err=>console.log('[saveExhibitionMode]->err: ',err))
+          .catch(err=>{
+            console.log('[saveExhibitionMode]->err: ',err)
+            if(err.response.status == 401){
+              navigation.navigate('Login', {tokenExpired:true})
+            }
+          })
         }
       }
       
@@ -535,7 +555,7 @@ const Index = (props) => {
               </View>
               <TouchableOpacity style={style.plusBox}
                   onPress={()=> setIsModalNewItemVisible(true)
-                  } // code for new item
+                  } /// code for new item                                 
               >
                   <AntDesign name="plus" size={28} color="white"/>
               </TouchableOpacity>

@@ -32,7 +32,12 @@ const BottomSheet = (props) => {
           }, 300);         
           }
         )
-        .catch(err => console.log(err.response.status))
+        .catch(err => {
+          console.log(err.response.status)
+          if(err.response.status == 401){
+            navigation.navigate('Login', {tokenExpired:true})
+          }
+        })
       }
     }
 
@@ -53,7 +58,12 @@ const BottomSheet = (props) => {
           }, 200);         
           }
         )
-        .catch(err => console.log(err.response.status))
+        .catch(err => {
+          console.log(err.response.status)
+          if(err.response.status == 401){
+            navigation.navigate('Login', {tokenExpired:true})
+          }
+        })
       }
     }
 
