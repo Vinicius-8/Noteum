@@ -4,7 +4,7 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         //backgroundColor: '#0c0f1f',
-        backgroundColor:'#0d0d0d',
+        backgroundColor:'#050505',
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
@@ -16,8 +16,8 @@ export default StyleSheet.create({
         borderRadius: 10,
     },
     image:{
-        width: 100,
-        height: 100,
+        width: 120,
+        height: 120,
         marginTop: -100,
         marginBottom: -180,
     },

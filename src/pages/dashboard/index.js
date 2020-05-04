@@ -118,7 +118,7 @@ const Index = (props) => {
           }
         })
         .then(resp => {
-          console.log('[deleteItem]->', resp.data.lists) 
+          //console.log('[deleteItem]->', resp.data.lists) 
           drawerRef.current.closeDrawer();
           setTimeout(()=>{
             setDrawerLists(resp.data.lists)
