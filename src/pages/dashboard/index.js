@@ -48,13 +48,13 @@ const Index = (props) => {
     //console.log('-[dashboard]-> datauser: ',props.route.params);
     useEffect(() => { // leave the app
       const backAction = () => {
-        Alert.alert("Atenção!", "Tem certeza que quer sair?", [
+        Alert.alert("Attention!", "Are you sure you want to exit?", [
           {
-            text: "Cancelar",
+            text: "Cancel",
             onPress: () => null,
             style: "cancel"
           },
-          { text: "Sim", onPress: () => BackHandler.exitApp() }
+          { text: "Yes", onPress: () => BackHandler.exitApp() }
         ]);
         return true;
       };
@@ -186,10 +186,10 @@ const Index = (props) => {
             <View style={style.modalContainer} >
               <TouchableWithoutFeedback>
                   <View style={style.modalBox} >
-                    <Text style={ style.modalTitle }>Nova lista:</Text>
+                    <Text style={ style.modalTitle }>New list:</Text>
                     
                     <TextInput numberOfLines={2} maxLength={50} multiline={true}
-                      placeholder="Nome da lista" selectionColor={'snow'}
+                      placeholder="List name" selectionColor={'snow'}
                       style={style.inputModal}
                       onChangeText={
                         text => setNewDrawerListText(text)
@@ -201,11 +201,11 @@ const Index = (props) => {
                       <TouchableOpacity onPress={ ()=> setIsModalVisible(false) }
                         style={style.barButton}>
 
-                        <Text style={style.barButtonText}>Cancelar</Text>
+                        <Text style={style.barButtonText}>Cancel</Text>
                       </TouchableOpacity>
           
                       <TouchableOpacity style={style.barButton} onPress={saveNewList} >
-                        <Text style={style.barButtonText}>Salvar</Text>
+                        <Text style={style.barButtonText}>Save</Text>
                       </TouchableOpacity>
                     </View>        
                   </View>
@@ -256,8 +256,8 @@ const Index = (props) => {
           .then(response=> {
             //console.log(response.data); 
             var d = response.data
-            d.s = 'Salvar'
-            d.c = 'Cancelar'
+            d.s = 'Save'
+            d.c = 'Cancel'
 
             //setOpenGraphData(response.data)                        
             setOpenGraphData(d)
@@ -298,7 +298,7 @@ const Index = (props) => {
                     <TextInput maxLength={50}  multiline={false}
                       //selection={{start: 0, end: 0}}
                       
-                      placeholder="link copiado" selectionColor={'snow'}
+                      placeholder="Copied link" selectionColor={'snow'}
                       style={style.inputModal}
                       onChangeText={
                         text => setNewUrl(text)
@@ -311,7 +311,7 @@ const Index = (props) => {
                       <TouchableOpacity onPress={ ()=> {setIsModalNewItemVisible(false);setLoading(false)} }
                         style={style.barButton}>
     
-                        <Text style={style.barButtonText}>Cancelar</Text>
+                        <Text style={style.barButtonText}>Cancel</Text>
                       </TouchableOpacity>
           
                       <TouchableOpacity style={style.barButton}
@@ -322,7 +322,7 @@ const Index = (props) => {
                           }
                         }
                       >
-                        <Text style={style.barButtonText}>Salvar</Text>
+                        <Text style={style.barButtonText}>Save</Text>
                       </TouchableOpacity>
                     </View>     
                   </View>
@@ -367,14 +367,14 @@ const Index = (props) => {
               }
             })
           }else{
-            Alert.alert("Erro", "O item não pode ser criado")            
+            Alert.alert("Error", "Item can't be created")            
           }                  
           setIsModalNewItemVisible(false)
           
         }
 
         const ListToSaveMenu =()=> (<View style={style.MNIBox} >
-          <Text style={[style.MNITitle, {backgroundColor:'#596180'}]}>Salvar em: </Text>
+          <Text style={[style.MNITitle, {backgroundColor:'#596180'}]}>Save in: </Text>
           <FlatList
             data={drawerLists}
             showsVerticalScrollIndicator={false}
@@ -474,9 +474,7 @@ const Index = (props) => {
             }
           })
           .then(resp=> {
-            //console.log('[saveExhibitionMode]->200: ', resp)
-            console.log('definindo...');
-            
+            //console.log('[saveExhibitionMode]->200: ', resp)                      
             setExhibitionMode(mode)
             
           })
@@ -499,7 +497,7 @@ const Index = (props) => {
             <View style={style.modalContainer} >
               <TouchableWithoutFeedback>
                   <View style={style.MCBox} >
-                    <Text style={ style.modalTitle }>Exibição:</Text>
+                    <Text style={ style.modalTitle }>Exhibition:</Text>
                       <TouchableOpacity style={[style.MCButton, {borderBottomColor: '#575E78',borderBottomWidth: .8}]}
                         onPress={()=> {
                           saveExhibitionMode('small')
@@ -549,15 +547,15 @@ const Index = (props) => {
                 onPress={
                   ()=>{
                     Alert.alert(
-                      'Atenção',
-                      "Deseja realmente deletar a lista \'"+item.title+"\'?",
+                      'Attention',
+                      "Do you really want to delete the list \'"+item.title+"\'?",
                       [
                         
                         {
-                          text: 'Cancelar',
+                          text: 'Cancel',
                           style: 'cancel',
                         },
-                        {text: 'Deletar', onPress: () =>{deleteDrawerItem({item})}},
+                        {text: 'Delete', onPress: () =>{deleteDrawerItem({item})}},
                       ],
                       {cancelable: true},)
 
@@ -582,7 +580,7 @@ const Index = (props) => {
         
           <TouchableOpacity style={[style.drawerItem, {backgroundColor:'#262C38'}, style.drawerItemSpecial]} 
           onPress={ createNewDrawerList }>
-              <Text style={style.drawerItemText}>+ Nova lista</Text>
+              <Text style={style.drawerItemText}>+ New list</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={[style.drawerConfigButton,{backgroundColor:'#262C38'} ]}

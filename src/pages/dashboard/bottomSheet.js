@@ -68,7 +68,7 @@ const BottomSheet = (props) => {
     }
 
     const ListToSaveMenu =()=> (<View style={style.MNIBox} >
-      <Text style={[style.BSCTitle, {backgroundColor:'#596180'}]}>Mover para: </Text>
+      <Text style={[style.BSCTitle, {backgroundColor:'#596180'}]}>Move to: </Text>
       <FlatList
         data={props.userData.user.lists}
         showsVerticalScrollIndicator={false}
@@ -101,7 +101,7 @@ const BottomSheet = (props) => {
                     }
                 >
                     <MaterialCommunityIcons name="file-move" style={style.BSCIcon} />
-                    <Text style={style.BSCText}>Mover</Text>
+                    <Text style={style.BSCText}>Move</Text>
                 </TouchableOpacity>
                 
                 <TouchableOpacity style={style.BSCButton}
@@ -112,7 +112,7 @@ const BottomSheet = (props) => {
                     }}
                 >
                     <MaterialCommunityIcons name="trash-can-outline" style={style.BSCIcon} />
-                    <Text style={style.BSCText}>Apagar</Text>
+                    <Text style={style.BSCText}>Delete</Text>
                 </TouchableOpacity>
               </View> : <ListToSaveMenu />}
             </View>

@@ -166,12 +166,11 @@ const Login = (props) => {
                 <Text style={style.text}>Login: </Text>
                 <TouchableOpacity onPress={async ()=>{
                       loginWithAllData();
-                      //console.log(userData);
                     }}>
                     
                       <View style={style.loginBox}>
                           <AntDesign name="google" size={29} color="black"/>
-                          <Text>Logar com o Google</Text>
+                          <Text>Login with Google</Text>
                       </View> 
                 </TouchableOpacity>
               </View>
