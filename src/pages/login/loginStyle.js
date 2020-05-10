@@ -20,6 +20,7 @@ export default StyleSheet.create({
         height: 120,
         marginTop: -100,
         marginBottom: -180,
+        borderRadius: 15
     },
 
     text:{

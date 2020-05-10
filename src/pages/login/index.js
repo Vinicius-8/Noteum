@@ -175,7 +175,7 @@ const Login = (props) => {
                 </TouchableOpacity>
               </View>
           :
-            <ProgressBarAndroid styleAttr="Normal"/>
+            <ProgressBarAndroid styleAttr="Normal" color="snow"/>
         }  
         </View>
     );
