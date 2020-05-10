@@ -1,3 +1,6 @@
+
+<img src="https://user-images.githubusercontent.com/33498293/81240788-c2af4700-8fde-11ea-99e6-d994bec8c43c.gif" width="1080" alt="Noteum GiF">
+
 # Noteum
 A note saver for your links, made with React Native and Expo
 
