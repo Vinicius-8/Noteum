@@ -14,6 +14,11 @@ const BottomSheet = (props) => {
     const navigation = useNavigation()
     //console.log('[BottomSheet]-> ', navigation);
     
+    function detailItem(){
+      navigation.navigate('Detail', {item: ITEM}); 
+      props.refere.current.close();
+    }
+
     function moveItem(list){
       if(ITEM !== null){
         api.put('items', {}, // esse corpo é fundamental para o backend
@@ -94,6 +99,16 @@ const BottomSheet = (props) => {
           
             <View style={style.BSCContainer}>
               {!showLists ? <View>
+                <TouchableOpacity style={style.BSCButton} 
+                    onPress={ ()=> {                      
+                        detailItem()
+                      }                    
+                    }
+                >
+                    <MaterialCommunityIcons name="information" style={style.BSCIcon} />
+                    <Text style={style.BSCText}>Detail</Text>
+                </TouchableOpacity>
+
                 <TouchableOpacity style={style.BSCButton} 
                     onPress={ ()=> {                      
                       setShowLists(true)

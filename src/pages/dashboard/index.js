@@ -39,7 +39,6 @@ const Index = (props) => {
     const USER = props.route.params.user
     const TOKEN = props.route.params.token
     const [exhibitionMode, setExhibitionMode] = useState(USER.exhibition_mode);
-    
 
     if(props.route.params.list_id !== undefined){
       loadItemsDataFromList(props.route.params.list_id)
