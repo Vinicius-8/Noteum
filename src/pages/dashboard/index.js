@@ -13,6 +13,7 @@ import {
   Clipboard,
   ProgressBarAndroid,
   Image,
+  ToastAndroid
 } from 'react-native'
 
 import api from '../../services/api'
@@ -117,7 +118,8 @@ const Index = (props) => {
           }
         })
         .then(resp => {
-          //console.log('[deleteItem]->', resp.data.lists) 
+          //console.log('[deleteItem]->', resp.data.lists)
+          ToastAndroid.show('List deleted', ToastAndroid.SHORT) 
           drawerRef.current.closeDrawer();
           setTimeout(()=>{
             setDrawerLists(resp.data.lists)
@@ -163,6 +165,7 @@ const Index = (props) => {
           }}
             )
             .then(response => {//console.log(response);
+              ToastAndroid.show('List created', ToastAndroid.SHORT)
           });
         } catch (error) {
             console.log('-[saveNewList]-> ', error);
@@ -355,6 +358,7 @@ const Index = (props) => {
             })
             .then(response =>  {
               //console.log('[createItem] response: ', response.data.owner_list_id)
+              ToastAndroid.show('Item created', ToastAndroid.SHORT)
               setTimeout(()=>{
                 navigation.navigate('Dashboard', {list_id:response.data.owner_list_id});  
               }, 200);  
@@ -475,7 +479,7 @@ const Index = (props) => {
           .then(resp=> {
             //console.log('[saveExhibitionMode]->200: ', resp)                      
             setExhibitionMode(mode)
-            
+            ToastAndroid.show((mode+' mode'), ToastAndroid.SHORT) 
           })
           .catch(err=>{
             console.log('[saveExhibitionMode]->err: ',err)

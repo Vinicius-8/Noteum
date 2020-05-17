@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, TouchableOpacity, Text, FlatList } from 'react-native';
+import { View, TouchableOpacity, Text, FlatList, ToastAndroid } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import api from '../../services/api'
@@ -32,6 +32,7 @@ const BottomSheet = (props) => {
         })
         .then(resp => {
           console.log(resp.status) 
+          ToastAndroid.show('Item moved', ToastAndroid.SHORT) 
           setTimeout(()=>{
             navigation.navigate('Dashboard', {list_id:list.id});  
           }, 300);         
@@ -57,7 +58,7 @@ const BottomSheet = (props) => {
           }
         })
         .then(resp => {
-          //console.log('[deleteItem]->', resp) 
+          //console.log('[deleteItem]->', resp)
           setTimeout(()=>{
             navigation.navigate('Dashboard', {list_id:resp.data.list_id});  
           }, 200);         
@@ -120,10 +121,9 @@ const BottomSheet = (props) => {
                 </TouchableOpacity>
                 
                 <TouchableOpacity style={style.BSCButton}
-                    onPress={ ()=> {
-                      console.log('Apagando: ', props.item.title)
-                      deleteItem()
-                      props.refere.current.close();
+                    onPress={ ()=> {          
+                      deleteItem()                      
+                      props.refere.current.close();                        
                     }}
                 >
                     <MaterialCommunityIcons name="trash-can-outline" style={style.BSCIcon} />
