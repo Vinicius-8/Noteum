@@ -101,9 +101,18 @@ const Login = (props) => {
       .catch(err => {
         //fail
         if(err){
-          console.log('[loginWithAllData, error]: ', err.response.status)
-        }else{
-          console.log('[loginWithAllData, error]: ', err)
+            try{
+            
+              if(err.response.status){
+                console.log('[simpleLogin, error]: ', err.response.status)
+              }else if(err.response){
+                console.log('[simpleLogin, error]: ', err.response)
+              }              
+              console.log('[simpleLogin, error]: ', err)
+            }catch(e){
+              console.log('[simpleLogin, error]', e);
+              
+            }
         }
         setLoading(false)
       });
@@ -146,7 +155,11 @@ const Login = (props) => {
     
     useEffect(()=>{            
       Secure('credentials', null).then(
-        json => setUserData(json)
+        json => {setUserData(json)
+        
+        console.log('crreeeeee',json);
+        }
+        
       )
     }, []);
     useEffect(()=>{          

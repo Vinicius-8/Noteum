@@ -39,8 +39,9 @@ const Index = (props) => {
     const navigation = useNavigation()
     const USER = props.route.params.user
     const TOKEN = props.route.params.token
-    const [exhibitionMode, setExhibitionMode] = useState(USER.exhibition_mode);
+    const [exhibitionMode, setExhibitionMode] = useState(USER.exhibition_mode);    
 
+    
     if(props.route.params.list_id !== undefined){
       loadItemsDataFromList(props.route.params.list_id)
       props.route.params.list_id = undefined
@@ -118,7 +119,7 @@ const Index = (props) => {
           }
         })
         .then(resp => {
-          //console.log('[deleteItem]->', resp.data.lists)
+          console.log('[deleteItem]->', resp.data.lists)
           ToastAndroid.show('List deleted', ToastAndroid.SHORT) 
           drawerRef.current.closeDrawer();
           setTimeout(()=>{
@@ -148,8 +149,9 @@ const Index = (props) => {
 
     const ModalNewListScreen = () =>{
       const [newDrawerListText, setNewDrawerListText] = useState('');
-
+      
       function saveNewList(){
+        ToastAndroid.show('Creating...', ToastAndroid.SHORT)
         if(!newDrawerListText)
           return
         try {
@@ -164,8 +166,18 @@ const Index = (props) => {
             'Authorization': "Bearer "+ TOKEN
           }}
             )
-            .then(response => {//console.log(response);
+            .then(response => {
+              
               ToastAndroid.show('List created', ToastAndroid.SHORT)
+                             
+              setTimeout(()=>{         
+                setIsModalVisible(false);                                                  
+                drawerLists.push({id:response.data.id, title: newDrawerListText});
+                setDrawerLists(drawerLists);
+                drawerRef.current.openDrawer();                  
+              }, 2000);
+              
+                
           });
         } catch (error) {
             console.log('-[saveNewList]-> ', error);
@@ -173,10 +185,17 @@ const Index = (props) => {
               navigation.navigate('Login', {tokenExpired:true})
             }            
         }
-        setIsModalVisible(false);
-        drawerLists.push({id:drawerLists.length+1, title: newDrawerListText});
-        setDrawerLists(drawerLists);
-        drawerRef.current.openDrawer();
+        
+        /*setTimeout(()=>{
+          setIsModalVisible(false);
+          drawerLists.push({id:returnedList.id, title: newDrawerListText});
+          setDrawerLists(drawerLists);
+          drawerRef.current.openDrawer();
+          console.log(drawerLists);
+          
+        }, 2000);*/
+        
+        
       }
 
       return(
@@ -255,8 +274,7 @@ const Index = (props) => {
               "Authorization": "Bearer "+ TOKEN
             }
           }, )
-          .then(response=> {
-            //console.log(response.data); 
+          .then(response=> {          
             var d = response.data
             d.s = 'Save'
             d.c = 'Cancel'
@@ -272,6 +290,10 @@ const Index = (props) => {
             setIsLoaded(false)
             if(err.response.status == 401){
               navigation.navigate('Login', {tokenExpired:true})
+            }else if(err.response.status == 406){
+              setIsLoaded(false)
+              setIsModalNewItemVisible(false)
+              Alert.alert("Sorry", "The link is not supported")              
             }
           })
         }else{
@@ -541,11 +563,12 @@ const Index = (props) => {
             ({item}) => 
             <View style={style.drawerItemBox}>
               <TouchableOpacity style={currentList === item ? style.drawerItemSelected :style.drawerItem } onPress={
-                ()=> selectDrawerItem({item})            
+                ()=> {selectDrawerItem({item}); console.log('selecionando item: ', item);
+                            }
               }>
                 <Text numberOfLines={2}  style={style.drawerItemText}>{item.title}</Text>
               </TouchableOpacity>
-              {item.id != 1 ?
+              {item.title != 'All' ?
               <TouchableOpacity style={style.drawerDeleteButton}
                 onPress={
                   ()=>{

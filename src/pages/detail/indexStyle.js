@@ -4,10 +4,16 @@ import Constants from 'expo-constants'
 const indexStyle = StyleSheet.create({
     container:{
         flex: 1,
-        alignItems: 'flex-start',
+        //alignItems: 'flex-start',
+        alignItems: 'center',
         backgroundColor:'#262C38',
-        paddingTop: Constants.statusBarHeight + 10,
+        paddingTop: Constants.statusBarHeight + 10,                        
     },
+    container2:{
+                        
+        backgroundColor:'#262C38',
+        paddingTop: 70                       
+    },    
     img:{
         width: 330,
         height:250,
@@ -21,7 +27,7 @@ const indexStyle = StyleSheet.create({
         marginTop: 20,
         marginLeft: 15,
         fontSize: 20,
-        color:'snow'
+        color:'snow',        
     },
     description:{
         margin: 20,
@@ -32,13 +38,13 @@ const indexStyle = StyleSheet.create({
     clipboardBox:{
         flexDirection: 'row',
         alignItems:'center',
-        backgroundColor:'#43485C',
+        backgroundColor:'#43485C',        
     },
     url:{
         color:'snow',
         width: 280,
         margin: 15,
-        fontSize:18,         
+        fontSize:18,                         
     }, 
     returnButton:{
         margin: 10,

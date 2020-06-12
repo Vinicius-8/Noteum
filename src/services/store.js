@@ -5,7 +5,16 @@ const Store = async (key, value)=>{
     if (value != null) {
         SecureStore.setItemAsync(key, JSON.stringify(value))
     }else {
-        json = await SecureStore.getItemAsync(key)
+        json = null
+        try{
+            json = await SecureStore.getItemAsync(key)
+        }catch (error) {
+            json = {
+                email: 'invalid@email.com',
+                token: 'invalid_token'
+              }
+              return json
+        }
         return JSON.parse(json)
     }
 }

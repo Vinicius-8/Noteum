@@ -18,28 +18,33 @@ const Detail = (props) => {
         navigation.goBack()
     }
     return(
+        <>
         <View style={style.container}>
             <ScrollView 
                 showsVerticalScrollIndicator={true}                
             >
             <Image source={{uri: ITEM.img_url}} style={style.img}/> 
-            <Text style={style.title}>{ITEM.title}</Text>  
-            <Text style={style.description}>{ITEM.description}</Text>
-            <View style={style.clipboardBox}>
+            <Text  style={style.title}>{ITEM.title}</Text>  
+            <Text  style={style.description}>{ITEM.description}</Text>        
+                             
+            </ScrollView>
+        </View>
+        <View style={style.clipboardBox}>
                 <Text numberOfLines={1} style={style.url}>{ITEM.url}</Text>
                 <TouchableOpacity
                     onPress={copylink}
                 >
                     <MaterialCommunityIcons name="content-copy" size={24} color="snow" />
                 </TouchableOpacity>
-            </View>                  
-            </ScrollView>
+            </View> 
+        <View style={style.container2}>
             <TouchableOpacity style={style.returnButton}
                 onPress={goBack}
             >
                 <Text style={style.returnText}>Return</Text>    
             </TouchableOpacity>        
         </View>
+        </>
     );
 }
 
