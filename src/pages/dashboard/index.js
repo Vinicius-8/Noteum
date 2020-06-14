@@ -147,6 +147,16 @@ const Index = (props) => {
       setIsModalConfigExhibitionVisible(true)
     }
 
+    
+    function logoutSession(){      
+      Secure('credentials', {
+        email: 'invalid@email.com',
+        token: 'invalid_token'
+      })
+      navigation.navigate('Login',{tokenExpired:true});
+      
+    }
+
     const ModalNewListScreen = () =>{
       const [newDrawerListText, setNewDrawerListText] = useState('');
       
@@ -532,15 +542,22 @@ const Index = (props) => {
                       <Text style={style.MCText}>Small</Text>  
                       </TouchableOpacity>                                                                
 
-                      <TouchableOpacity  style={style.MCButton} 
+                      <TouchableOpacity  style={[style.MCButton, {borderBottomColor: '#575E78',borderBottomWidth: .9}]}
                         onPress={()=> {
                           saveExhibitionMode('large')
                           setIsModalConfigExhibitionVisible(false)
                         }}
                       >
                       <Text style={style.MCText}>Large</Text>  
-                      </TouchableOpacity>                                                                
-                  </View>
+                      </TouchableOpacity>            
+                      
+                      <Text style={ style.modalTitle }>Session:</Text>
+                      <TouchableOpacity  style={style.MCButton} 
+                        onPress={logoutSession}
+                      >
+                      <Text style={[style.MCText, {paddingBottom: 10}]}>Logout</Text>  
+                      </TouchableOpacity> 
+                  </View>                  
                 </TouchableWithoutFeedback>
             </View>
           </TouchableWithoutFeedback>

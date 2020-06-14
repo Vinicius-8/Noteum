@@ -137,6 +137,7 @@ const Login = (props) => {
               }
               return response;
           } else {
+              setLoading(false)
               return { cancelled: true };
           }
         } catch (e) {
@@ -155,10 +156,7 @@ const Login = (props) => {
     
     useEffect(()=>{            
       Secure('credentials', null).then(
-        json => {setUserData(json)
-        
-        console.log('crreeeeee',json);
-        }
+        json => {setUserData(json)}
         
       )
     }, []);

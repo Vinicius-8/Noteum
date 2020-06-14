@@ -175,7 +175,7 @@ const indexStyle = StyleSheet.create({
      // Modal config    Modal config    Modal config
      MCBox:{
         width: 300,
-        height: 150,
+        height: 200,
         borderRadius: 5,
         backgroundColor:'#6A7291',
         justifyContent:'space-around'

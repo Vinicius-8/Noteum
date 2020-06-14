@@ -12,7 +12,7 @@ const Store = async (key, value)=>{
             json = {
                 email: 'invalid@email.com',
                 token: 'invalid_token'
-              }
+            }
               return json
         }
         return JSON.parse(json)
