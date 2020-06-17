@@ -13,6 +13,7 @@ import logoImg from '../../../assets/icon.png'
 import { AntDesign } from '@expo/vector-icons';
 
 const Login = (props) => {
+  
     const navigation = useNavigation();    
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
@@ -79,7 +80,6 @@ const Login = (props) => {
     }
 
     async function simpleLogin(){
-  
       var data = {
         "email": userData.email,
         "token": userData.token
@@ -94,8 +94,8 @@ const Login = (props) => {
       })
       .then(res => {
         //success
-        //console.log('[simpleLogin]200>>>>', res.data)
-        //res.data.push({'token': data.token})
+        console.log('[simpleLogin]200>>>>', res.data)
+        res.data.push({'token': data.token})
         goDashboard(res.data, data.token)
       })
       .catch(err => {
@@ -155,15 +155,17 @@ const Login = (props) => {
     }
     
     useEffect(()=>{            
+      
       Secure('credentials', null).then(
         json => {setUserData(json)}
         
       )
     }, []);
-    useEffect(()=>{          
+    useEffect(()=>{   
       if(userData!=null){
-        //console.log('partindo para o login...', userData); 
         simpleLogin()       
+      }else{
+        setLoading(false)
       }
     },[userData])
 
