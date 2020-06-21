@@ -24,8 +24,15 @@
     ],
     "android": {
       "package": "com.oytu.noteum",
-      "versionCode": 1
-    
+      "versionCode": 1,
+      "googleServicesFile": "src/google-services.json",
+      "config": {
+        "googleSignIn": {
+          "apiKey": "<key_created_in_google_cloud>",
+          "certificateHash": "<hash_saved_in_google_cloud>"
+        }
+        
+      }
     }
   }
 }
