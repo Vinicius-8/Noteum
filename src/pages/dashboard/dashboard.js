@@ -10,6 +10,7 @@ const Dashboard = (props) => {
     const data = props.data.items
     const exibitionMode = props.mode
     
+
     function openLinkInWebBrowser(item){
         console.log('tocou no item: ', item.title);
         Linking.openURL(item.url)
@@ -47,6 +48,7 @@ const Dashboard = (props) => {
                                     item={item} 
                                     onPress={openLinkInWebBrowser} 
                                     userData={props.userData}
+                                    listTitle={props.data.title}
                                     />
                             </TouchableOpacity>
                         )}

@@ -28,8 +28,8 @@
       "googleServicesFile": "src/google-services.json",
       "config": {
         "googleSignIn": {
-          "apiKey": "<key_created_in_google_cloud>",
-          "certificateHash": "<hash_saved_in_google_cloud>"
+          "apiKey": "AIzaSyDSTdKOc5nslwuF9gOQp93AqXdlVd1WZVM",
+          "certificateHash": "AF23EA8715A0ED17FB631707417C9EF0B4A13442"
         }
         
       }

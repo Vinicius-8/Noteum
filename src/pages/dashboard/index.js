@@ -371,7 +371,7 @@ const Index = (props) => {
     
       const ItemContainer = () =>{
         const [isListVisible, setIsListVisible] = useState(false);
-
+        const changedList = drawerLists.slice(1)
         async function createItem(lista){        
           if(lista != null && openGraphData!=null){
             api.post('items', {
@@ -411,7 +411,7 @@ const Index = (props) => {
         const ListToSaveMenu =()=> (<View style={style.MNIBox} >
           <Text style={[style.MNITitle, {backgroundColor:'#596180'}]}>Save in: </Text>
           <FlatList
-            data={drawerLists}
+            data={changedList}
             showsVerticalScrollIndicator={false}
             keyExtractor={data => String(data.id)}
             
@@ -497,9 +497,7 @@ const Index = (props) => {
 
     const ModalConfigExhibition = () =>{
       
-      function saveExhibitionMode(mode){
-        console.log('mode: ', mode , 'usermode: ', exhibitionMode);
-        
+      function saveExhibitionMode(mode){        
         if(mode!=null && mode != exhibitionMode){
           api.put('exhibition', {},{
             headers:{
@@ -580,8 +578,7 @@ const Index = (props) => {
             ({item}) => 
             <View style={style.drawerItemBox}>
               <TouchableOpacity style={currentList === item ? style.drawerItemSelected :style.drawerItem } onPress={
-                ()=> {selectDrawerItem({item}); console.log('selecionando item: ', item);
-                            }
+                ()=> {selectDrawerItem({item});}
               }>
                 <Text numberOfLines={2}  style={style.drawerItemText}>{item.title}</Text>
               </TouchableOpacity>

@@ -13,6 +13,8 @@ const BottomSheet = (props) => {
     const [showLists, setShowLists] = useState(false)
     const navigation = useNavigation()
     //console.log('[BottomSheet]-> ', navigation);
+    const changetList = props.userData.user.lists.slice(1)         
+    
     
     function detailItem(){
       navigation.navigate('Detail', {item: ITEM}); 
@@ -76,12 +78,13 @@ const BottomSheet = (props) => {
     const ListToSaveMenu =()=> (<View style={style.MNIBox} >
       <Text style={[style.BSCTitle, {backgroundColor:'#596180'}]}>Move to: </Text>
       <FlatList
-        data={props.userData.user.lists}
+        data={changetList}
         showsVerticalScrollIndicator={false}
         keyExtractor={data => String(data.id)}
         
         renderItem={(
-          ({item}) => 
+          ({item}) =>
+                       
             <TouchableOpacity style={style.BSCListContainer} onPress={
                ()=> {
                 moveItem(item);
@@ -100,7 +103,7 @@ const BottomSheet = (props) => {
           
             <View style={style.BSCContainer}>
               {!showLists ? <View>
-                <TouchableOpacity style={style.BSCButton} 
+                <TouchableOpacity style={style.BSCButton}  // info
                     onPress={ ()=> {                      
                         detailItem()
                       }                    
@@ -110,7 +113,7 @@ const BottomSheet = (props) => {
                     <Text style={style.BSCText}>Detail</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={style.BSCButton} 
+                {props.listTitle != "All" ? <TouchableOpacity style={style.BSCButton}  // move
                     onPress={ ()=> {                      
                       setShowLists(true)
                       }                    
@@ -118,9 +121,9 @@ const BottomSheet = (props) => {
                 >
                     <MaterialCommunityIcons name="file-move" style={style.BSCIcon} />
                     <Text style={style.BSCText}>Move</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> : <View/>}
                 
-                <TouchableOpacity style={style.BSCButton}
+                <TouchableOpacity style={style.BSCButton}    // delete
                     onPress={ ()=> {          
                       deleteItem()                      
                       props.refere.current.close();                        

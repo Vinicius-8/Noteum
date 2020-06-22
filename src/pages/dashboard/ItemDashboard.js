@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, Text,  } from 'react-native';
 import { Entypo } from '@expo/vector-icons'
 
@@ -9,6 +9,7 @@ import BottomSheet  from './bottomSheet'
 const ItemDashboard = (props) => {
     const bottomSheetRef = useRef(); // eu crio a refenrencia no item mas passo ela como prop para o bottom sheet    
     const ITEM = props.item
+    
 
     if(props.isLoading){
         if(props.size === 'small'){
@@ -69,7 +70,7 @@ const ItemDashboard = (props) => {
                         <Text numberOfLines={2} style={styleSmall.title}>{ITEM.title}</Text>
                         <Text ellipsizeMode='tail' numberOfLines={4} style={styleSmall.text}>{ITEM.description}</Text>
                     </View>
-                    <BottomSheet refere={bottomSheetRef} userData={props.userData} item={ITEM}/>
+                    <BottomSheet refere={bottomSheetRef} userData={props.userData} item={ITEM} listTitle={props.listTitle}/>
                 </View>
             );
         }else if(props.size === 'large'){
@@ -95,7 +96,7 @@ const ItemDashboard = (props) => {
                             </View>
                             
                         </View>
-                        <BottomSheet refere={bottomSheetRef} userData={props.userData} item={ITEM}/>
+                        <BottomSheet refere={bottomSheetRef} userData={props.userData} item={ITEM} listTitle={props.listTitle}/>
                     </View>
                 );
         }

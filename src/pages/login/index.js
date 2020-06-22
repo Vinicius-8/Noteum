@@ -43,8 +43,8 @@ const Login = (props) => {
 
     async function loginWithAllData(){
         setLoading(true)
-        //var googleData = await signInWithGoogle() //dev
-        var googleData = await googleSignIn()   //web      
+        var googleData = await signInWithGoogle() //dev
+        //var googleData = await googleSignIn()   //web      
         console.log('[loginWithAllData, googleData] ->', googleData.token);
         console.log('\n');
         
