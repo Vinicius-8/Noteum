@@ -30,8 +30,11 @@
         "googleSignIn": {
           "apiKey": "AIzaSyDSTdKOc5nslwuF9gOQp93AqXdlVd1WZVM",
           "certificateHash": "AF23EA8715A0ED17FB631707417C9EF0B4A13442"
-        }
-        
+        }                
+      },
+      "adaptiveIcon":{
+        "backgroundColor": "#000000",
+        "foregroundImage":"./assets/adaptiveIcon.png"
       }
     }
   }
