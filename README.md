@@ -27,4 +27,4 @@ $ yarn
 $ expo start
 
 ```
-> You can download the app on [Google Play Store](https://play.google.com/store/apps/details?id=com.oytu.noteum) 
+> You can download the apk [here](https://drive.google.com/file/d/1k_EASl-EaeJi8oqvR9FceVJ2S4NUQGzO/view?usp=sharing) 
