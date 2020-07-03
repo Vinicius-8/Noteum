@@ -28,7 +28,6 @@ import { useNavigation } from '@react-navigation/native';
 
 const Index = (props) => {
 
-    //console.log('prps==> ', props);
     const drawerRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalNewItemVisible, setIsModalNewItemVisible] = useState(false);
@@ -46,7 +45,7 @@ const Index = (props) => {
       loadItemsDataFromList(props.route.params.list_id)
       props.route.params.list_id = undefined
     }
-    //console.log('-[dashboard]-> datauser: ',props.route.params);
+
     useEffect(() => { // leave the app
       const backAction = () => {
         Alert.alert("Attention!", "Are you sure you want to exit?", [
@@ -79,7 +78,6 @@ const Index = (props) => {
         }
       })
       .then(res=> {
-        //console.log('[loaditemdata]>>resp: ',res.data)
         setCurrentList(res.data)
         setTimeout(()=>{
           setIsLoading(false)
@@ -119,7 +117,6 @@ const Index = (props) => {
           }
         })
         .then(resp => {
-          console.log('[deleteItem]->', resp.data.lists)
           ToastAndroid.show('List deleted', ToastAndroid.SHORT) 
           drawerRef.current.closeDrawer();
           setTimeout(()=>{
@@ -153,8 +150,7 @@ const Index = (props) => {
         email: 'invalid@email.com',
         token: 'invalid_token'
       })
-      navigation.navigate('Login',{tokenExpired:true});
-      
+      navigation.navigate('Login',{tokenExpired:true});      
     }
 
     const ModalNewListScreen = () =>{
@@ -165,9 +161,7 @@ const Index = (props) => {
         if(!newDrawerListText)
           return
         try {
-          // criar nova lista
-          //console.log('[saveNewList]-> ', props.route.params);
-          
+          // criar nova lista          
           api.post('lists', {
             title: newDrawerListText,       
           },{
@@ -194,17 +188,7 @@ const Index = (props) => {
             if(error.response.status == 401){
               navigation.navigate('Login', {tokenExpired:true})
             }            
-        }
-        
-        /*setTimeout(()=>{
-          setIsModalVisible(false);
-          drawerLists.push({id:returnedList.id, title: newDrawerListText});
-          setDrawerLists(drawerLists);
-          drawerRef.current.openDrawer();
-          console.log(drawerLists);
-          
-        }, 2000);*/
-        
+        }                    
         
       }
 
@@ -276,7 +260,6 @@ const Index = (props) => {
         var clipboardContent = await readFromClipboard()        
         setLoading(true)
         if(validURL(clipboardContent) && loading){
-          //console.log('validou como url');
           
           api.get('/api?url='+clipboardContent,
           {
@@ -289,9 +272,7 @@ const Index = (props) => {
             d.s = 'Save'
             d.c = 'Cancel'
 
-            //setOpenGraphData(response.data)                        
             setOpenGraphData(d)
-            //console.log('ogdata: ',d); 
             setIsLoaded(true)  
             setLoading(false)       
           })
@@ -389,7 +370,6 @@ const Index = (props) => {
               }
             })
             .then(response =>  {
-              //console.log('[createItem] response: ', response.data.owner_list_id)
               ToastAndroid.show('Item created', ToastAndroid.SHORT)
               setTimeout(()=>{
                 navigation.navigate('Dashboard', {list_id:response.data.owner_list_id});  
@@ -465,7 +445,6 @@ const Index = (props) => {
                         onPress={
                           ()=>{
                             saveLinkLocally()
-                            //setIsModalNewItemVisible(false)
                             setIsListVisible(true)
                           }
                         }
@@ -507,7 +486,6 @@ const Index = (props) => {
             }
           })
           .then(resp=> {
-            //console.log('[saveExhibitionMode]->200: ', resp)                      
             setExhibitionMode(mode)
             ToastAndroid.show((mode+' mode'), ToastAndroid.SHORT) 
           })

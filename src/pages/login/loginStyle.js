@@ -16,8 +16,8 @@ export default StyleSheet.create({
         borderRadius: 10,
     },
     image:{
-        width: 120,
-        height: 120,
+        width: 172,
+        height: 130,
         marginTop: -100,
         marginBottom: -180,
         borderRadius: 15

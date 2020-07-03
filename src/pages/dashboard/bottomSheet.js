@@ -12,7 +12,6 @@ const BottomSheet = (props) => {
     const ITEM = props.item
     const [showLists, setShowLists] = useState(false)
     const navigation = useNavigation()
-    //console.log('[BottomSheet]-> ', navigation);
     const changetList = props.userData.user.lists.slice(1)         
     
     
@@ -23,7 +22,7 @@ const BottomSheet = (props) => {
 
     function moveItem(list){
       if(ITEM !== null){
-        api.put('items', {}, // esse corpo é fundamental para o backend
+        api.put('items', {}, // esse 'corpo' é fundamental para o backend
         {
           headers:{
            "Owner-id": props.userData.user.id,
@@ -32,8 +31,7 @@ const BottomSheet = (props) => {
             "Authorization": "Bearer "+ props.userData.token
           }
         })
-        .then(resp => {
-          console.log(resp.status) 
+        .then(resp => {          
           ToastAndroid.show('Item moved', ToastAndroid.SHORT) 
           setTimeout(()=>{
             navigation.navigate('Dashboard', {list_id:list.id});  
@@ -60,7 +58,6 @@ const BottomSheet = (props) => {
           }
         })
         .then(resp => {
-          //console.log('[deleteItem]->', resp)
           setTimeout(()=>{
             navigation.navigate('Dashboard', {list_id:resp.data.list_id});  
           }, 200);         

@@ -6,13 +6,11 @@ import ItemDash from './ItemDashboard'
 
 
 const Dashboard = (props) => {  
-    //console.log('[dashboard]-> ', props);
     const data = props.data.items
     const exibitionMode = props.mode
     
 
     function openLinkInWebBrowser(item){
-        console.log('tocou no item: ', item.title);
         Linking.openURL(item.url)
         .catch((err) => console.error('An error occurred', err));
     }        

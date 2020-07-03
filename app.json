@@ -23,19 +23,27 @@
       "**/*"
     ],
     "android": {
-      "package": "com.oytu.noteum",
-      "versionCode": 1,
+      "package": "com.noteum",
+      "versionCode": 6,
       "googleServicesFile": "src/google-services.json",
       "config": {
         "googleSignIn": {
-          "apiKey": "AIzaSyDSTdKOc5nslwuF9gOQp93AqXdlVd1WZVM",
-          "certificateHash": "AF23EA8715A0ED17FB631707417C9EF0B4A13442"
+          "apiKey": "<API_KEY>", 
+          "certificateHash": "<HASH>"
         }                
       },
       "adaptiveIcon":{
         "backgroundColor": "#000000",
         "foregroundImage":"./assets/adaptiveIcon.png"
-      }
-    }
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_PHONE_STATE",
+        "RECORD_AUDIO",
+        "READ_CONTACTS"
+      ]
+    },
+    "scheme":"noteum"
+    
   }
 }
